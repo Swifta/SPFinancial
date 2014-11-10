@@ -1,4 +1,4 @@
-package com.swifta.utils;
+package com.swifta.spfinancial.utils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
