@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="orginatingpartnerbalanceafter" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="destinationpartnerbalanceafter" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="statuscode" type="{http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0}statusCode" minOccurs="0"/>
+ *         &lt;element name="financialtransactionid" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="ResponseMessage" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="extensionparameters" type="{http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0}parameterExtension" minOccurs="0"/>
  *       &lt;/sequence>
@@ -38,6 +39,7 @@ import javax.xml.bind.annotation.XmlType;
     "orginatingpartnerbalanceafter",
     "destinationpartnerbalanceafter",
     "statuscode",
+    "financialtransactionid",
     "responseMessage",
     "extensionparameters"
 })
@@ -48,6 +50,7 @@ public class Cashoutresponse {
     protected String destinationpartnerbalanceafter;
     @XmlSchemaType(name = "string")
     protected StatusCode statuscode;
+    protected String financialtransactionid;
     @XmlElement(name = "ResponseMessage")
     protected String responseMessage;
     protected ParameterExtension extensionparameters;
@@ -146,6 +149,30 @@ public class Cashoutresponse {
      */
     public void setStatuscode(StatusCode value) {
         this.statuscode = value;
+    }
+
+    /**
+     * Gets the value of the financialtransactionid property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getFinancialtransactionid() {
+        return financialtransactionid;
+    }
+
+    /**
+     * Sets the value of the financialtransactionid property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setFinancialtransactionid(String value) {
+        this.financialtransactionid = value;
     }
 
     /**

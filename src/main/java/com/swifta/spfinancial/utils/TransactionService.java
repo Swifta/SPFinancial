@@ -3,55 +3,104 @@ package com.swifta.spfinancial.utils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import com.mobilemoney.services.mwallet.TeasyMobileClient;
-import com.mobilemoney.services.mwallet.MPWalletServiceStub.MTransferResponseType;
-import com.ng.mats.psa.mt.model.MoneyTransfer;
+import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashinresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashoutresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.ParameterExtension;
-import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.StatusCode;
 
 public class TransactionService {
-	public Cashoutresponse initiateCashin(String orginatingresourceid,
-			String destinationresourceid,
-			String amount,
-			String sendingdescription,
-			String receivingdescription,
-			ParameterExtension extensionparameters) throws Exception{
-		Cashoutresponse cashoutresponse = new Cashoutresponse();
+	private TeasyMobileProcessor teasyMobileProcessor = new TeasyMobileProcessor();
+	private PocketMoniProcessor pocketMoniProcessor = new PocketMoniProcessor();
+	private FETsProcessor fetsProcessor = new FETsProcessor();
+	private FortisProcessor fortisProcessor = new FortisProcessor();
+	private ReadyCashProcessor readyCashProcessor = new ReadyCashProcessor();
+
+	public Cashinresponse performCashIn(String orginatingresourceid,
+			String destinationresourceid, String amount,
+			String sendingdescription, String receivingdescription,
+			ParameterExtension extensionparameters) {
+		Cashinresponse cashinresponse = new Cashinresponse();
+		BigDecimal newAmount = parseInputToDecimal(amount);
+
 		switch (extensionparameters.getMmoperator()) {
 		case "teasymobile":
-			MoneyTransfer teasymoneyTransfer = new MoneyTransfer(
-					destinationresourceid, parseInputToDecimal(amount),
-					receivingdescription, "");
-			TeasyMobileClient teasyMobileClient = new TeasyMobileClient();
-			System.out.println("posting to teasymobile");
-			MTransferResponseType response = teasyMobileClient
-					.doCashout(teasymoneyTransfer);
-			if (response.getStatus() == 0)
-				response.setResponseMessage("Transaction Successful");
-			cashoutresponse.setDestinationpartnerbalanceafter(null);
-			cashoutresponse.setOrginatingpartnerbalanceafter(null);
-			cashoutresponse.setOrginatingpartnerfee(null);
-			cashoutresponse.setStatuscode(StatusCode.COMPLETED);
-			cashoutresponse.setResponseMessage(response
-					.getResponseMessage());
-			ParameterExtension parameterExtension = new ParameterExtension();
-			parameterExtension.setSpTransactionid(response
-					.getTransactionId());
-			parameterExtension.getExtensionparam().add(
-					response.getTransactionId());
-			parameterExtension.getExtensionparam().add(
-					response.getResponseMessage());
-			cashoutresponse.setExtensionparameters(parameterExtension);
-			return cashoutresponse;
-			
+			cashinresponse = teasyMobileProcessor.cashinrequest(
+					orginatingresourceid, destinationresourceid, newAmount,
+					sendingdescription, receivingdescription,
+					extensionparameters);
+			break;
+		case "pocketmoni":
+			cashinresponse = pocketMoniProcessor.cashinrequest(
+					orginatingresourceid, destinationresourceid, newAmount,
+					sendingdescription, receivingdescription,
+					extensionparameters);
+			break;
+		case "readycash":
+			cashinresponse = readyCashProcessor.cashinrequest(
+					orginatingresourceid, destinationresourceid, newAmount,
+					sendingdescription, receivingdescription,
+					extensionparameters);
+			break;
+		case "fets":
+			cashinresponse = fetsProcessor.cashinrequest(orginatingresourceid,
+					destinationresourceid, newAmount, sendingdescription,
+					receivingdescription, extensionparameters);
+			break;
+		case "fortis":
+			cashinresponse = fortisProcessor.cashinrequest(
+					orginatingresourceid, destinationresourceid, newAmount,
+					sendingdescription, receivingdescription,
+					extensionparameters);
+			break;
 		default:
-			cashoutresponse
-					.setDestinationpartnerbalanceafter("not supported");
-			
-			return cashoutresponse;
+			break;
 		}
+		return cashinresponse;
 	}
+
+	public Cashoutresponse performCashOut(String orginatingresourceid,
+			String destinationresourceid, String amount,
+			String sendingdescription, String receivingdescription,
+			ParameterExtension extensionparameters) throws Exception {
+		Cashoutresponse cashoutresponse = new Cashoutresponse();
+		BigDecimal newAmount = parseInputToDecimal(amount);
+
+		switch (extensionparameters.getMmoperator()) {
+		case "teasymobile":
+			cashoutresponse = teasyMobileProcessor.cashoutrequest(
+					orginatingresourceid, destinationresourceid, newAmount,
+					sendingdescription, receivingdescription,
+					extensionparameters);
+			break;
+		case "pocketmoni":
+			cashoutresponse = pocketMoniProcessor.cashoutrequest(
+					orginatingresourceid, destinationresourceid, newAmount,
+					sendingdescription, receivingdescription,
+					extensionparameters);
+			break;
+		case "readycash":
+			cashoutresponse = readyCashProcessor.cashoutrequest(
+					orginatingresourceid, destinationresourceid, newAmount,
+					sendingdescription, receivingdescription,
+					extensionparameters);
+			break;
+		case "fets":
+			cashoutresponse = fetsProcessor.cashoutrequest(
+					orginatingresourceid, destinationresourceid, newAmount,
+					sendingdescription, receivingdescription,
+					extensionparameters);
+			break;
+		case "fortis":
+			cashoutresponse = fortisProcessor.cashoutrequest(
+					orginatingresourceid, destinationresourceid, newAmount,
+					sendingdescription, receivingdescription,
+					extensionparameters);
+			break;
+		default:
+			break;
+		}
+		return cashoutresponse;
+	}
+
 	/**
 	 * Strips formatting from a currency string. All non-digit information is
 	 * removed, but the sign is preserved.

@@ -24,32 +24,16 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _CashinrequestResponse_QNAME = new QName("http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0", "cashinrequestResponse");
     private final static QName _Cashoutrequest_QNAME = new QName("http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0", "cashoutrequest");
     private final static QName _Cashinrequest_QNAME = new QName("http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0", "cashinrequest");
     private final static QName _CashoutrequestResponse_QNAME = new QName("http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0", "cashoutrequestResponse");
-    private final static QName _CashinrequestResponse_QNAME = new QName("http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0", "cashinrequestResponse");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1
      * 
      */
     public ObjectFactory() {
-    }
-
-    /**
-     * Create an instance of {@link CashoutrequestResponse }
-     * 
-     */
-    public CashoutrequestResponse createCashoutrequestResponse() {
-        return new CashoutrequestResponse();
-    }
-
-    /**
-     * Create an instance of {@link Cashinrequest }
-     * 
-     */
-    public Cashinrequest createCashinrequest() {
-        return new Cashinrequest();
     }
 
     /**
@@ -66,6 +50,22 @@ public class ObjectFactory {
      */
     public Cashoutrequest createCashoutrequest() {
         return new Cashoutrequest();
+    }
+
+    /**
+     * Create an instance of {@link Cashinrequest }
+     * 
+     */
+    public Cashinrequest createCashinrequest() {
+        return new Cashinrequest();
+    }
+
+    /**
+     * Create an instance of {@link CashoutrequestResponse }
+     * 
+     */
+    public CashoutrequestResponse createCashoutrequestResponse() {
+        return new CashoutrequestResponse();
     }
 
     /**
@@ -93,6 +93,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CashinrequestResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0", name = "cashinrequestResponse")
+    public JAXBElement<CashinrequestResponse> createCashinrequestResponse(CashinrequestResponse value) {
+        return new JAXBElement<CashinrequestResponse>(_CashinrequestResponse_QNAME, CashinrequestResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link Cashoutrequest }{@code >}}
      * 
      */
@@ -117,15 +126,6 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0", name = "cashoutrequestResponse")
     public JAXBElement<CashoutrequestResponse> createCashoutrequestResponse(CashoutrequestResponse value) {
         return new JAXBElement<CashoutrequestResponse>(_CashoutrequestResponse_QNAME, CashoutrequestResponse.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link CashinrequestResponse }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0", name = "cashinrequestResponse")
-    public JAXBElement<CashinrequestResponse> createCashinrequestResponse(CashinrequestResponse value) {
-        return new JAXBElement<CashinrequestResponse>(_CashinrequestResponse_QNAME, CashinrequestResponse.class, null, value);
     }
 
 }
