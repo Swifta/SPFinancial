@@ -4,6 +4,8 @@ import java.util.logging.Logger;
 
 import org.apache.commons.lang.RandomStringUtils;
 
+import com.etranzact.fundgate.ws.FundGateImplServiceStub.FundResponse;
+import com.etranzact.fundgate.ws.PocketMoneyClient;
 import com.swifta.spfinancial.utils.SMSEngine;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashinresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashoutresponse;
@@ -15,10 +17,12 @@ public class TesterStub {
 	private static final Logger logger = Logger.getLogger(TesterStub.class
 			.getName());
 
-	public static void main(String args[]) {
+	public static void main(String args[]) throws Exception {
 
-		// performCashin();
-		performCashout();
+		// performCashinTeasy();
+		// performCashoutTeasy();
+		// performCashOutPocket();
+		performCashInPocket();
 	}
 
 	public static String generateReferencenNumber(int length) {
@@ -28,7 +32,43 @@ public class TesterStub {
 		return transactionId;
 	}
 
-	public static void performCashout() {
+	public static void performCashOutPocket() throws Exception {
+		com.ng.mats.psa.mt.pocketmoni.model.MoneyTransfer moneyTransfer = new com.ng.mats.psa.mt.pocketmoni.model.MoneyTransfer(
+				"", "2348076763191", null, 100, null, "dada", "7005");
+
+		PocketMoneyClient pocketMoneyClient = new PocketMoneyClient();
+
+		pocketMoneyClient.configureSecurity();
+
+		FundResponse response = pocketMoneyClient.doCashOut(moneyTransfer);
+		System.out.println("Error Code: " + response.getError());
+		System.out.println("Message: " + response.getMessage());
+		System.out.println("Other reference: " + response.getOtherReference());
+		System.out.println("Reference: " + response.getReference());
+		System.out.println("Amount: " + response.getAmount());
+		System.out.println("Date: " + response.getDate());
+	}
+
+	public static void performCashInPocket() throws Exception {
+		com.ng.mats.psa.mt.pocketmoni.model.MoneyTransfer moneyTransfer = new com.ng.mats.psa.mt.pocketmoni.model.MoneyTransfer(
+				"", "2348076763191", null, 100, null, "dada", "7005");
+
+		PocketMoneyClient pocketMoneyClient = new PocketMoneyClient();
+
+		pocketMoneyClient.configureSecurity();
+
+		FundResponse response = pocketMoneyClient.doCashIn(moneyTransfer);
+
+		System.out.println("Error Code: " + response.getError());
+		System.out.println("Message: " + response.getMessage());
+		System.out.println("Other reference: " + response.getOtherReference());
+		System.out.println("Reference: " + response.getReference());
+		System.out.println("Amount: " + response.getAmount());
+		System.out.println("Date: " + response.getDate());
+
+	}
+
+	public static void performCashoutTeasy() {
 		System.out.println("Hello there");
 		SPfinancialPortImpl impl = new SPfinancialPortImpl();
 		String orginatingresourceid = "08063305711";
@@ -111,7 +151,7 @@ public class TesterStub {
 		// smsEngine.sendSMS(smsParameters);
 	}
 
-	public static void performCashin() {
+	public static void performCashinTeasy() {
 		System.out.println("Hello there");
 		SPfinancialPortImpl impl = new SPfinancialPortImpl();
 		String orginatingresourceid = "08063305711";

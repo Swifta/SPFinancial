@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import com.mobilemoney.services.mwallet.MPWalletServiceStub.MTransferResponseType;
 import com.mobilemoney.services.mwallet.TeasyMobileClient;
-import com.ng.mats.psa.mt.model.MoneyTransfer;
+import com.ng.mats.psa.mt.teasymobile.model.MoneyTransfer;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashinresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashoutresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.ParameterExtension;

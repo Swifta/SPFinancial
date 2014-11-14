@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/org.wso2.securevault_1.0.0.wso2v2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/AxisLibrary"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/TeasyMobileLibrary.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/PocketMoniLibrary.jar"/>
 	<classpathentry kind="output" path="target"/>
 </classpath>
