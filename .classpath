@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry excluding="TesterStub.java" kind="src" path="src/main/java"/>
 	<classpathentry kind="lib" path="/PSACoreModuleEngine/lib/commons-lang-2.6.jar"/>
 	<classpathentry kind="lib" path="/PSAWebPortal/lib/commons-codec-1.9.jar"/>
 	<classpathentry kind="lib" path="/PSAWebPortal/lib/commons-logging-1.2.jar"/>

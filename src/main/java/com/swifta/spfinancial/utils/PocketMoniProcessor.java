@@ -49,7 +49,7 @@ public class PocketMoniProcessor extends MMOProcessor {
 
 		FundResponse response = null;
 		try {
-			response = pocketMoneyClient.doCashIn(moneyTransfer);
+			response = pocketMoneyClient.doCashOut(moneyTransfer);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
