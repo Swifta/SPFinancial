@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "parameterExtension", propOrder = { "mmoperator",
-		"spTransactionid", "pin", "extensionparam" })
+		"spTransactionid", "extensionparam" })
 public class ParameterExtension {
 
 	protected String mmoperator;
