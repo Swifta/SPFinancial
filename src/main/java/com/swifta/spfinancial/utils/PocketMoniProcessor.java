@@ -54,22 +54,28 @@ public class PocketMoniProcessor extends MMOProcessor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		cashoutresponse.setDestinationpartnerbalanceafter(String
-				.valueOf(response.getClosingBalance()));// response.getOpeningBalance();
+		if (response != null) {
+			cashoutresponse.setDestinationpartnerbalanceafter(String
+					.valueOf(response.getClosingBalance()));// response.getOpeningBalance();
 
-		cashoutresponse.setOrginatingpartnerfee(null);
-		cashoutresponse.setFinancialtransactionid(response.getReference());// response.getOtherReference();
-		cashoutresponse.setOrginatingpartnerbalanceafter(String
-				.valueOf(response.getOpeningBalance()));
-		cashoutresponse.setResponseMessage(response.getMessage());
-		cashoutresponse.setStatuscode(StatusCode.COMPLETED);
-		ParameterExtension parameterExtension = new ParameterExtension();
-		parameterExtension.setSpTransactionid(response.getOtherReference());
-		parameterExtension.getExtensionparam().add(
-				String.valueOf(response.getTotalFailed()));
-		parameterExtension.getExtensionparam().add(
-				String.valueOf(response.getTotalSuccess()));
-		cashoutresponse.setExtensionparameters(parameterExtension);
+			cashoutresponse.setOrginatingpartnerfee(null);
+			cashoutresponse.setFinancialtransactionid(response.getReference());// response.getOtherReference();
+			cashoutresponse.setOrginatingpartnerbalanceafter(String
+					.valueOf(response.getOpeningBalance()));
+			cashoutresponse.setResponseMessage(response.getMessage());
+			cashoutresponse.setStatuscode(StatusCode.COMPLETED);
+			ParameterExtension parameterExtension = new ParameterExtension();
+			parameterExtension.setSpTransactionid(response.getOtherReference());
+			parameterExtension.getExtensionparam().add(
+					String.valueOf(response.getTotalFailed()));
+			parameterExtension.getExtensionparam().add(
+					String.valueOf(response.getTotalSuccess()));
+			cashoutresponse.setExtensionparameters(parameterExtension);
+		} else {
+			cashoutresponse.setStatuscode(StatusCode.FAILED);
+			cashoutresponse
+					.setResponseMessage("There was no response from PocketMoni");
+		}
 		return cashoutresponse;
 
 	}
@@ -114,22 +120,28 @@ public class PocketMoniProcessor extends MMOProcessor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		cashinresponse.setDestinationpartnerbalanceafter(String
-				.valueOf(response.getClosingBalance()));// response.getOpeningBalance();
+		if (response != null) {
+			cashinresponse.setDestinationpartnerbalanceafter(String
+					.valueOf(response.getClosingBalance()));// response.getOpeningBalance();
 
-		cashinresponse.setFee(null);
-		cashinresponse.setFinancialtransactionid(response.getReference());// response.getOtherReference();
-		cashinresponse.setOrginatingpartnerbalanceafter(String.valueOf(response
-				.getOpeningBalance()));
-		cashinresponse.setResponseMessage(response.getMessage());
-		cashinresponse.setStatuscode(StatusCode.COMPLETED);
-		ParameterExtension parameterExtension = new ParameterExtension();
-		parameterExtension.setSpTransactionid(response.getOtherReference());
-		parameterExtension.getExtensionparam().add(
-				String.valueOf(response.getTotalFailed()));
-		parameterExtension.getExtensionparam().add(
-				String.valueOf(response.getTotalSuccess()));
-		cashinresponse.setExtensionparameters(parameterExtension);
+			cashinresponse.setFee(null);
+			cashinresponse.setFinancialtransactionid(response.getReference());// response.getOtherReference();
+			cashinresponse.setOrginatingpartnerbalanceafter(String
+					.valueOf(response.getOpeningBalance()));
+			cashinresponse.setResponseMessage(response.getMessage());
+			cashinresponse.setStatuscode(StatusCode.COMPLETED);
+			ParameterExtension parameterExtension = new ParameterExtension();
+			parameterExtension.setSpTransactionid(response.getOtherReference());
+			parameterExtension.getExtensionparam().add(
+					String.valueOf(response.getTotalFailed()));
+			parameterExtension.getExtensionparam().add(
+					String.valueOf(response.getTotalSuccess()));
+			cashinresponse.setExtensionparameters(parameterExtension);
+		} else {
+			cashinresponse.setStatuscode(StatusCode.FAILED);
+			cashinresponse
+					.setResponseMessage("There was no response from PocketMoni");
+		}
 		return cashinresponse;
 
 	}

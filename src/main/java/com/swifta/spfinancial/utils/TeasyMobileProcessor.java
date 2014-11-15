@@ -68,20 +68,26 @@ public class TeasyMobileProcessor extends MMOProcessor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (response.getStatus() == 0)
-			response.setResponseMessage("Transaction Successful");
-		cashinresponse.setDestinationpartnerbalanceafter(null);
-		cashinresponse.setFinancialtransactionid(response.getTransactionId());
-		cashinresponse.setOrginatingpartnerbalanceafter(null);
-		cashinresponse.setStatuscode(StatusCode.COMPLETED);
-		cashinresponse.setFee(null);
-		cashinresponse.setResponseMessage(response.getResponseMessage());
-		ParameterExtension parameterExtension = new ParameterExtension();
-		parameterExtension.setSpTransactionid(response.getTransactionId());
-		parameterExtension.getExtensionparam().add(response.getTransactionId());
-		parameterExtension.getExtensionparam().add(
-				response.getResponseMessage());
-		cashinresponse.setExtensionparameters(parameterExtension);
+		if (response != null) {
+			if (response.getStatus() == 0)
+				response.setResponseMessage("Transaction Successful");
+			cashinresponse.setDestinationpartnerbalanceafter(null);
+			cashinresponse.setFinancialtransactionid(response
+					.getTransactionId());
+			cashinresponse.setOrginatingpartnerbalanceafter(null);
+			cashinresponse.setStatuscode(StatusCode.COMPLETED);
+			cashinresponse.setFee(null);
+			cashinresponse.setResponseMessage(response.getResponseMessage());
+			ParameterExtension parameterExtension = new ParameterExtension();
+			parameterExtension.setSpTransactionid(response.getTransactionId());
+			parameterExtension.getExtensionparam().add(
+					response.getTransactionId());
+			parameterExtension.getExtensionparam().add(
+					response.getResponseMessage());
+			cashinresponse.setExtensionparameters(parameterExtension);
+		} else {
+
+		}
 		return cashinresponse;
 	}
 

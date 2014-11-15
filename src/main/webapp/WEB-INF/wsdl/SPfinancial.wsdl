@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="spfinancials" targetNamespace="http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0">
+    <xs:element name="cashinrequest" type="tns:cashinrequest"/>
+    <xs:element name="cashinrequestResponse" type="tns:cashinrequestResponse"/>
+    <xs:element name="cashoutrequest" type="tns:cashoutrequest"/>
+    <xs:element name="cashoutrequestResponse" type="tns:cashoutrequestResponse"/>
+    <xs:complexType name="cashoutrequest">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="orginatingresourceid" type="xs:string"/>
+            <xs:element minOccurs="0" name="destinationresourceid" type="xs:string"/>
+            <xs:element minOccurs="0" name="amount" type="xs:string"/>
+            <xs:element minOccurs="0" name="sendingdescription" type="xs:string"/>
+            <xs:element minOccurs="0" name="receivingdescription" type="xs:string"/>
+            <xs:element minOccurs="0" name="extensionparameters" type="tns:parameterExtension"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="parameterExtension">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="mmoperator" type="xs:string"/>
+            <xs:element minOccurs="0" name="spTransactionid" type="xs:string"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="extensionparam" nillable="true" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="cashoutrequestResponse">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="return" type="tns:cashoutresponse"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="cashoutresponse">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="orginatingpartnerfee" type="xs:string"/>
+            <xs:element minOccurs="0" name="orginatingpartnerbalanceafter" type="xs:string"/>
+            <xs:element minOccurs="0" name="destinationpartnerbalanceafter" type="xs:string"/>
+            <xs:element minOccurs="0" name="statuscode" type="tns:statusCode"/>
+            <xs:element minOccurs="0" name="financialtransactionid" type="xs:string"/>
+            <xs:element minOccurs="0" name="ResponseMessage" type="xs:string"/>
+            <xs:element minOccurs="0" name="extensionparameters" type="tns:parameterExtension"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="cashinrequest">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="orginatingresourceid" type="xs:string"/>
+            <xs:element minOccurs="0" name="destinationresourceid" type="xs:string"/>
+            <xs:element minOccurs="0" name="amount" type="xs:string"/>
+            <xs:element minOccurs="0" name="sendingdescription" type="xs:string"/>
+            <xs:element minOccurs="0" name="receivingdescription" type="xs:string"/>
+            <xs:element minOccurs="0" name="extensionparameters" type="tns:parameterExtension"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="cashinrequestResponse">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="return" type="tns:cashinresponse"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="cashinresponse">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="fee" type="xs:string"/>
+            <xs:element minOccurs="0" name="orginatingpartnerbalanceafter" type="xs:string"/>
+            <xs:element minOccurs="0" name="destinationpartnerbalanceafter" type="xs:string"/>
+            <xs:element minOccurs="0" name="financialtransactionid" type="xs:string"/>
+            <xs:element minOccurs="0" name="ResponseMessage" type="xs:string"/>
+            <xs:element minOccurs="0" name="statuscode" type="tns:statusCode"/>
+            <xs:element minOccurs="0" name="extensionparameters" type="tns:parameterExtension"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="statusCode">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="COMPLETED"/>
+            <xs:enumeration value="REJECTED"/>
+            <xs:enumeration value="PENDING"/>
+            <xs:enumeration value="FAILED"/>
+            <xs:enumeration value="CREATED"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="cashoutrequest">
+    <wsdl:part name="parameters" element="tns:cashoutrequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cashinrequest">
+    <wsdl:part name="parameters" element="tns:cashinrequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cashoutrequestResponse">
+    <wsdl:part name="parameters" element="tns:cashoutrequestResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cashinrequestResponse">
+    <wsdl:part name="parameters" element="tns:cashinrequestResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="SPfinancial">
+    <wsdl:operation name="cashoutrequest">
+      <wsdl:input name="cashoutrequest" message="tns:cashoutrequest">
+    </wsdl:input>
+      <wsdl:output name="cashoutrequestResponse" message="tns:cashoutrequestResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cashinrequest">
+      <wsdl:input name="cashinrequest" message="tns:cashinrequest">
+    </wsdl:input>
+      <wsdl:output name="cashinrequestResponse" message="tns:cashinrequestResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="spfinancialsSoapBinding" type="tns:SPfinancial">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="cashoutrequest">
+      <soap:operation soapAction="cashoutrequest" style="document"/>
+      <wsdl:input name="cashoutrequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="cashoutrequestResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cashinrequest">
+      <soap:operation soapAction="cashinrequest" style="document"/>
+      <wsdl:input name="cashinrequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="cashinrequestResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="spfinancials">
+    <wsdl:port name="SPfinancialPort" binding="tns:spfinancialsSoapBinding">
+      <soap:address location="http://localhost:9090/SPfinancialPort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
