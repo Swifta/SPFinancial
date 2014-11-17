@@ -4,12 +4,12 @@
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/org.wso2.securevault_1.0.0.wso2v2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/AxisLibrary"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/PocketMoniLibrary.jar"/>
-	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/TeasyMobileLibrary.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="/PSACoreModuleEngine/lib/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/TeasyMobileLibrary.jar"/>
 	<classpathentry kind="output" path="target"/>
 </classpath>

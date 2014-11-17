@@ -234,11 +234,11 @@ public class Testing {
 		System.out.println("Hello there");
 		SPfinancialPortImpl impl = new SPfinancialPortImpl();
 		String orginatingresourceid = "08063305711";
-		String destinationresourceid = "2348171000157";
-		String amount = "40";
-		String sendingdescription = "Payments";
-		String teasyPin = "7005";
-		String receivingdescription = "details";
+		String destinationresourceid = "2348170730938";
+		String amount = "10000";
+		String sendingdescription = "dada";
+		String teasyPin = "1234";
+		String receivingdescription = "dada";
 		ParameterExtension extensionparameters = new ParameterExtension();
 		System.out
 				.println("--------------------------------After instantiating extension parameters");
@@ -319,15 +319,18 @@ public class Testing {
 		System.out.println("Hello there");
 		SPfinancialPortImpl impl = new SPfinancialPortImpl();
 		String orginatingresourceid = "08063305711";
-		String destinationresourceid = "2348171000157";
+		String destinationresourceid = "2348170730938";
 		String amount = "40";
 		String sendingdescription = "Payments";
+		String teasyPin = "1234";
 		String receivingdescription = "details";
+
 		ParameterExtension extensionparameters = new ParameterExtension();
 		System.out
 				.println("--------------------------------After instantiating extension parameters");
 		extensionparameters.setMmoperator("teasymobile");
 		extensionparameters.setSpTransactionid(generateReferencenNumber(12));
+		extensionparameters.getExtensionparam().add(teasyPin);
 		System.out
 				.println("--------------------------------After setting extension parameters");
 		Cashinresponse cashinResponse = impl.cashinrequest(
