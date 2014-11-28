@@ -80,7 +80,8 @@ public class TeasyMobileProcessor extends MMOProcessor {
 		MTransferResponseType response = null;
 		try {
 			teasyMobileClient = new TeasyMobileClient();
-			System.out.println("posting to teasymobile");
+			System.out.println("posting to teasymobile >>>"
+					+ teasymoneyTransfer.toString());
 			response = teasyMobileClient.doCashIn(teasymoneyTransfer);
 
 		} catch (Exception e) {

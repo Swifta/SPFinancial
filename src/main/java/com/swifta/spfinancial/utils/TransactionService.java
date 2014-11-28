@@ -138,7 +138,7 @@ public class TransactionService {
 		// separator, divide by 100
 		// TODO: Handle currencies with different kinds of decimal places
 		BigDecimal amount = new BigDecimal(clean).setScale(2,
-				RoundingMode.HALF_EVEN).divide(new BigDecimal(100), 2,
+				RoundingMode.HALF_EVEN).divide(new BigDecimal(1), 2,
 				RoundingMode.HALF_EVEN);
 		return amount;
 	}

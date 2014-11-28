@@ -2,8 +2,6 @@
 <classpath>
 	<classpathentry excluding="TesterStub.java" kind="src" path="src/main/java"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/org.wso2.securevault_1.0.0.wso2v2.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/AxisLibrary"/>
-	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/PocketMoniLibrary.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>
@@ -11,5 +9,12 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="/PSACoreModuleEngine/lib/commons-lang-2.6.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/TeasyMobileLibrary.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/PocketMoniLibrary.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/ReadyCashLibrary.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/commons-codec_1.4.0.wso2v1.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/axiom_1.2.11.wso2v4.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/axis2_1.6.1.wso2v10.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/AxisNoADBCodec"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/FETSLibrary.jar"/>
 	<classpathentry kind="output" path="target"/>
 </classpath>
