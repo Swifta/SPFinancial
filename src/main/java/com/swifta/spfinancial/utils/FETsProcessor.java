@@ -115,4 +115,11 @@ public class FETsProcessor extends MMOProcessor {
 		return cashinResponse;
 	}
 
+	@Override
+	public Double balanceRequest(String orginatingresourceid,
+			ParameterExtension extensionparameters) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

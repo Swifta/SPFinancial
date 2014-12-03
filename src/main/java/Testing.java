@@ -19,8 +19,9 @@ public class Testing {
 
 		// performCashinTeasy();
 		// performCashoutTeasy();
-		// performCashOut();
-		performCashIn();
+
+		// performCashIn();
+		performCashOut();
 	}
 
 	public static String generateReferencenNumber(int length) {
@@ -54,7 +55,7 @@ public class Testing {
 		ParameterExtension extensionparameters = new ParameterExtension();
 		System.out
 				.println("--------------------------------After instantiating extension parameters");
-		extensionparameters.setMmoperator("teasymobile");
+		extensionparameters.setMmoperator("fets");
 		extensionparameters.setSpTransactionid(generateReferencenNumber(12));
 		extensionparameters.getExtensionparam().add(userPin);
 		System.out
@@ -152,7 +153,7 @@ public class Testing {
 		ParameterExtension extensionparameters = new ParameterExtension();
 		System.out
 				.println("--------------------------------After instantiating extension parameters");
-		extensionparameters.setMmoperator("pocketmoni");
+		extensionparameters.setMmoperator("fets");
 		extensionparameters.setSpTransactionid(generateReferencenNumber(12));
 		extensionparameters.getExtensionparam().add(userPin);
 		System.out

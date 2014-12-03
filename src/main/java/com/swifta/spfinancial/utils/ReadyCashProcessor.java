@@ -49,10 +49,15 @@ public class ReadyCashProcessor extends MMOProcessor {
 				.performCashout(moneyTransfer);
 		Cashoutresponse cashoutresponse = new Cashoutresponse();
 		if (serviceResponse != null) {
+			ParameterExtension newParam = new ParameterExtension();
+			newParam.setMmoperator(extensionparameters.getMmoperator());
+			newParam.setSpTransactionid(serviceResponse.getStan());
+			newParam.getExtensionparam().add(serviceResponse.getCode());
+			newParam.getExtensionparam().add(serviceResponse.getDesc());
 			logger.info("--------------------------------serviceResponse is not null");
 			cashoutresponse.setDestinationpartnerbalanceafter(serviceResponse
 					.getAvailableBalance());
-			cashoutresponse.setExtensionparameters(extensionparameters);
+			cashoutresponse.setExtensionparameters(newParam);
 			cashoutresponse
 					.setFinancialtransactionid(serviceResponse.getStan());
 			cashoutresponse.setOrginatingpartnerbalanceafter(serviceResponse
@@ -125,6 +130,13 @@ public class ReadyCashProcessor extends MMOProcessor {
 			cashinresponse.setStatuscode(StatusCode.PENDING);
 		// balanceEnquiry(moneyTransfer);
 		return cashinresponse;
+	}
+
+	@Override
+	public Double balanceRequest(String orginatingresourceid,
+			ParameterExtension extensionparameters) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

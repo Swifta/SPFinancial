@@ -55,7 +55,7 @@ public class TeasyMobileProcessor extends MMOProcessor {
 			ParameterExtension parameterExtension = new ParameterExtension();
 			parameterExtension.setSpTransactionid(response.getTransactionId());
 			parameterExtension.getExtensionparam().add(
-					response.getTransactionId());
+					String.valueOf(response.getStatus()));
 			parameterExtension.getExtensionparam().add(
 					response.getResponseMessage());
 			cashoutresponse.setExtensionparameters(parameterExtension);
@@ -108,7 +108,7 @@ public class TeasyMobileProcessor extends MMOProcessor {
 			ParameterExtension parameterExtension = new ParameterExtension();
 			parameterExtension.setSpTransactionid(response.getTransactionId());
 			parameterExtension.getExtensionparam().add(
-					response.getTransactionId());
+					String.valueOf(response.getStatus()));
 			parameterExtension.getExtensionparam().add(
 					response.getResponseMessage());
 			cashinresponse.setExtensionparameters(parameterExtension);
@@ -118,6 +118,13 @@ public class TeasyMobileProcessor extends MMOProcessor {
 					+ StatusCode.FAILED);
 		}
 		return cashinresponse;
+	}
+
+	@Override
+	public Double balanceRequest(String orginatingresourceid,
+			ParameterExtension extensionparameters) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

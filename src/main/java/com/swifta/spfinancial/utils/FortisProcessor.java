@@ -26,6 +26,11 @@ public class FortisProcessor extends MMOProcessor {
 		return null;
 	}
 
-
+	@Override
+	public Double balanceRequest(String orginatingresourceid,
+			ParameterExtension extensionparameters) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

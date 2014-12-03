@@ -66,10 +66,12 @@ public class PocketMoniProcessor extends MMOProcessor {
 			cashoutresponse.setStatuscode(StatusCode.COMPLETED);
 			ParameterExtension parameterExtension = new ParameterExtension();
 			parameterExtension.setSpTransactionid(response.getOtherReference());
+
+			parameterExtension.getExtensionparam().add(
+					String.valueOf(response.getError()));
+			parameterExtension.getExtensionparam().add(response.getMessage());
 			parameterExtension.getExtensionparam().add(
 					String.valueOf(response.getTotalFailed()));
-			parameterExtension.getExtensionparam().add(
-					String.valueOf(response.getTotalSuccess()));
 			cashoutresponse.setExtensionparameters(parameterExtension);
 		} else {
 			cashoutresponse.setStatuscode(StatusCode.FAILED);
@@ -133,6 +135,9 @@ public class PocketMoniProcessor extends MMOProcessor {
 			ParameterExtension parameterExtension = new ParameterExtension();
 			parameterExtension.setSpTransactionid(response.getOtherReference());
 			parameterExtension.getExtensionparam().add(
+					String.valueOf(response.getError()));
+			parameterExtension.getExtensionparam().add(response.getMessage());
+			parameterExtension.getExtensionparam().add(
 					String.valueOf(response.getTotalFailed()));
 			parameterExtension.getExtensionparam().add(
 					String.valueOf(response.getTotalSuccess()));
@@ -144,6 +149,13 @@ public class PocketMoniProcessor extends MMOProcessor {
 		}
 		return cashinresponse;
 
+	}
+
+	@Override
+	public Double balanceRequest(String orginatingresourceid,
+			ParameterExtension extensionparameters) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
