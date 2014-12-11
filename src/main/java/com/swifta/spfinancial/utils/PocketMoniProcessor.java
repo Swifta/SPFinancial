@@ -70,6 +70,13 @@ public class PocketMoniProcessor extends MMOProcessor {
 			parameterExtension.getExtensionparam().add(
 					String.valueOf(response.getError()));
 			parameterExtension.getExtensionparam().add(response.getMessage());
+
+			if (cashoutresponse.getStatuscode().toString()
+					.equalsIgnoreCase("COMPLETE")) {
+				parameterExtension.getExtensionparam().add("true");
+			} else {
+				parameterExtension.getExtensionparam().add("false");
+			}
 			parameterExtension.getExtensionparam().add(
 					String.valueOf(response.getTotalFailed()));
 			cashoutresponse.setExtensionparameters(parameterExtension);

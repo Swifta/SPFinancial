@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.apache.axis2.AxisFault;
+
 import com.ng.mats.psa.mt.readycash.model.MoneyTransfer;
 import com.ng.mats.psa.mt.readycash.util.ReadyCashClient;
 import com.readycashng.www.ws.api._1_0.AgentServiceServiceStub.ServiceResponse;
@@ -15,7 +17,7 @@ import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Statu
 public class ReadyCashProcessor extends MMOProcessor {
 	private static final Logger logger = Logger
 			.getLogger(ReadyCashProcessor.class.getName());
-	private ReadyCashClient readyCashClient = new ReadyCashClient();
+	private ReadyCashClient readyCashClient;
 
 	@Override
 	public Cashoutresponse cashoutrequest(String orginatingresourceid,
@@ -34,6 +36,7 @@ public class ReadyCashProcessor extends MMOProcessor {
 		moneyTransfer.setAgentUsername("mats@mats.com");
 		moneyTransfer.setReadyCashPin(password);
 		moneyTransfer.setReceiver(destinationresourceid);
+		moneyTransfer.setSender(orginatingresourceid);
 		List<String> extensionParam = extensionparameters.getExtensionparam();
 		if (extensionParam != null) {
 			logger.info("--------------------------------extension parameter is not null so pin is set");
@@ -45,15 +48,40 @@ public class ReadyCashProcessor extends MMOProcessor {
 		// check that dev branch is working
 		logger.info("--------------------------------contents being sent"
 				+ moneyTransfer.toString());
+		try {
+			logger.info("--------------------------------inside the try catch");
+			readyCashClient = new ReadyCashClient();
+		} catch (AxisFault e) {
+			// TODO Auto-generated catch block
+			logger.info("--------------------------------AxisFault Exception thrown"
+					+ e.getMessage());
+			e.printStackTrace();
+		}
 		ServiceResponse serviceResponse = readyCashClient
 				.performCashout(moneyTransfer);
 		Cashoutresponse cashoutresponse = new Cashoutresponse();
 		if (serviceResponse != null) {
+			if (serviceResponse.getCode().equals("0000"))
+				cashoutresponse.setStatuscode(StatusCode.COMPLETED);
+			else if (serviceResponse.getCode().equals("0051")
+					|| serviceResponse.getCode().equals("0091")
+					|| serviceResponse.getCode().equals("0096")
+					|| serviceResponse.getCode().equals("9999"))
+				cashoutresponse.setStatuscode(StatusCode.FAILED);
+			else
+				cashoutresponse.setStatuscode(StatusCode.PENDING);
+
 			ParameterExtension newParam = new ParameterExtension();
 			newParam.setMmoperator(extensionparameters.getMmoperator());
 			newParam.setSpTransactionid(serviceResponse.getStan());
 			newParam.getExtensionparam().add(serviceResponse.getCode());
 			newParam.getExtensionparam().add(serviceResponse.getDesc());
+			if (cashoutresponse.getStatuscode().toString()
+					.equalsIgnoreCase("COMPLETE")) {
+				newParam.getExtensionparam().add("true");
+			} else {
+				newParam.getExtensionparam().add("false");
+			}
 			logger.info("--------------------------------serviceResponse is not null");
 			cashoutresponse.setDestinationpartnerbalanceafter(serviceResponse
 					.getAvailableBalance());
@@ -64,15 +92,7 @@ public class ReadyCashProcessor extends MMOProcessor {
 					.getLedgerBalance());
 			// cashoutresponse.setOrginatingpartnerfee(partnerFee);
 			cashoutresponse.setResponseMessage(serviceResponse.getDesc());
-			if (serviceResponse.getCode().equals("0000"))
-				cashoutresponse.setStatuscode(StatusCode.COMPLETED);
-			else if (serviceResponse.getCode().equals("0051")
-					|| serviceResponse.getCode().equals("0091")
-					|| serviceResponse.getCode().equals("0096")
-					|| serviceResponse.getCode().equals("9999"))
-				cashoutresponse.setStatuscode(StatusCode.FAILED);
-			else
-				cashoutresponse.setStatuscode(StatusCode.PENDING);
+
 		} else {
 			logger.info("--------------------------------serviceResponse is null");
 		}

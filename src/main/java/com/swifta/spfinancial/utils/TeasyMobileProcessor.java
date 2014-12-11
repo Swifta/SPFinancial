@@ -58,6 +58,12 @@ public class TeasyMobileProcessor extends MMOProcessor {
 					String.valueOf(response.getStatus()));
 			parameterExtension.getExtensionparam().add(
 					response.getResponseMessage());
+			if (cashoutresponse.getStatuscode().toString()
+					.equalsIgnoreCase("COMPLETE")) {
+				parameterExtension.getExtensionparam().add("true");
+			} else {
+				parameterExtension.getExtensionparam().add("false");
+			}
 			cashoutresponse.setExtensionparameters(parameterExtension);
 		} else {
 			logger.info("---------------------response returned as "

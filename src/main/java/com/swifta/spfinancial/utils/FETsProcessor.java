@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.fets.mm.soap.services.FetsServicesServiceStub.ServiceResponse;
+import com.fets.mm.soap.services.FetsServiceStub.ServiceResponse;
 import com.ng.mats.psa.mt.fets.utils.FetsClient;
 import com.ng.mats.psa.mt.fets.utils.MoneyTransfer;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashinresponse;
@@ -16,8 +16,8 @@ public class FETsProcessor extends MMOProcessor {
 	private FetsClient fetsClient = new FetsClient();
 	private static final Logger logger = Logger.getLogger(FETsProcessor.class
 			.getName());
-	private long channelId = 10;
-	private long charge = 50;
+	private long channelId = 1;
+	private long charge = 5;
 
 	@Override
 	public Cashoutresponse cashoutrequest(String orginatingresourceid,
@@ -45,14 +45,8 @@ public class FETsProcessor extends MMOProcessor {
 		}
 		ServiceResponse serviceResponse = fetsClient.doCashOut(moneyTransfer);
 		Cashoutresponse cashoutResponse = new Cashoutresponse();
+
 		if (serviceResponse != null) {
-			logger.info("--------------------------------serviceResponse is not null");
-			cashoutResponse.setDestinationpartnerbalanceafter("0");
-			cashoutResponse.setExtensionparameters(extensionparameters);
-			cashoutResponse.setFinancialtransactionid("0");
-			cashoutResponse.setOrginatingpartnerbalanceafter("0");
-			cashoutResponse.setOrginatingpartnerfee("0");
-			cashoutResponse.setResponseMessage(serviceResponse.getMessage());
 			if (serviceResponse.getSuccess()) {
 				logger.info("--------------------------------serviceResponse is a success");
 				cashoutResponse.setStatuscode(StatusCode.COMPLETED);
@@ -60,6 +54,30 @@ public class FETsProcessor extends MMOProcessor {
 				logger.info("--------------------------------serviceResponse is not a success");
 				cashoutResponse.setStatuscode(StatusCode.FAILED);
 			}
+
+			ParameterExtension parameterExtension = new ParameterExtension();
+			parameterExtension.setMmoperator(extensionparameters
+					.getMmoperator());
+			parameterExtension
+					.setSpTransactionid(serviceResponse.getTnxRefNo());
+			parameterExtension.getExtensionparam().add(
+					String.valueOf(serviceResponse.getResponseCode()));
+			parameterExtension.getExtensionparam().add(
+					serviceResponse.getMessage());
+			if (cashoutResponse.getStatuscode().toString()
+					.equalsIgnoreCase("COMPLETE")) {
+				parameterExtension.getExtensionparam().add("true");
+			} else {
+				parameterExtension.getExtensionparam().add("false");
+			}
+			logger.info("--------------------------------serviceResponse is not null");
+			cashoutResponse.setDestinationpartnerbalanceafter("0");
+			cashoutResponse.setExtensionparameters(extensionparameters);
+			cashoutResponse.setFinancialtransactionid("0");
+			cashoutResponse.setOrginatingpartnerbalanceafter("0");
+			cashoutResponse.setOrginatingpartnerfee("0");
+			cashoutResponse.setResponseMessage(serviceResponse.getMessage());
+
 		} else {
 			logger.info("--------------------------------serviceResponse is null");
 		}
