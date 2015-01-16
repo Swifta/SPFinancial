@@ -40,14 +40,14 @@ public class Testing {
 		// String destinationresourceid = "2348076763191";
 
 		// teasymobile
-		String userPin = "7005";
-		String orginatingresourceid = "08063305711";
-		String destinationresourceid = "2348171000157";
+		// String userPin = "7005";
+		// String orginatingresourceid = "08063305711";
+		// String destinationresourceid = "2348171000157";
 		// String destinationresourceid = "2348104001339";
 		// readycash
-		// String userPin = "0000000000000000";
-		// String destinationresourceid = "08034083054";
-		// String orginatingresourceid = "070266989991";
+		String userPin = "0000000000000000";
+		String destinationresourceid = "08034083054";
+		String orginatingresourceid = "070266989991";
 
 		// fets
 		// String userPin = "5678";

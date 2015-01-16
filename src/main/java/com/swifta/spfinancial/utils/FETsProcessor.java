@@ -34,7 +34,8 @@ public class FETsProcessor extends MMOProcessor {
 		moneyTransfer.setChannelId(channelId);
 		moneyTransfer.setCharge(charge);
 		// moneyTransfer.setPayerWalletId(payerWalletId);
-		moneyTransfer.setRecieverNumber(destinationresourceid);
+		// moneyTransfer.setRecieverNumber(destinationresourceid);
+		moneyTransfer.setRecieverNumber(Constants.FETS_AGENT_MSISDN);
 		moneyTransfer.setRemarks(sendingdescription);
 		moneyTransfer
 				.setTransactionId(extensionparameters.getSpTransactionid());
@@ -65,7 +66,7 @@ public class FETsProcessor extends MMOProcessor {
 			parameterExtension.getExtensionparam().add(
 					serviceResponse.getMessage());
 			if (cashoutResponse.getStatuscode().toString()
-					.equalsIgnoreCase("COMPLETE")) {
+					.equalsIgnoreCase("COMPLETED")) {
 				parameterExtension.getExtensionparam().add("true");
 			} else {
 				parameterExtension.getExtensionparam().add("false");

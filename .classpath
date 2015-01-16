@@ -16,5 +16,6 @@
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/axis2_1.6.1.wso2v10.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/AxisNoADBCodec"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/FETSLibrary.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/FortisLibrary.jar"/>
 	<classpathentry kind="output" path="target"/>
 </classpath>

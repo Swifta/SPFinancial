@@ -23,6 +23,7 @@ public abstract class MMOProcessor {
 	public abstract Double balanceRequest(
 			java.lang.String orginatingresourceid,
 			com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.ParameterExtension extensionparameters);
+
 	/*
 	 * public abstract Airtimeresponse airtimeSale( java.lang.String
 	 * orginatingresourceid, java.lang.String destinationresourceid,

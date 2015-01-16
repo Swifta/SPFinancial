@@ -25,6 +25,8 @@ public class TeasyMobileProcessor extends MMOProcessor {
 		MoneyTransfer teasymoneyTransfer = new MoneyTransfer(
 				destinationresourceid, amount, receivingdescription,
 				extensionparameters.getExtensionparam().get(0));
+		teasymoneyTransfer.setReceiver(Constants.TEASY_AGENT_MSISDN);
+		teasymoneyTransfer.setTeasypin(Constants.TEASY_AGENT_PIN);
 		TeasyMobileClient teasyMobileClient;
 		MTransferResponseType response = null;
 		try {
@@ -58,8 +60,10 @@ public class TeasyMobileProcessor extends MMOProcessor {
 					String.valueOf(response.getStatus()));
 			parameterExtension.getExtensionparam().add(
 					response.getResponseMessage());
+			logger.info("-----------------------STATUS CODE IS :::::::"
+					+ cashoutresponse.getStatuscode().toString());
 			if (cashoutresponse.getStatuscode().toString()
-					.equalsIgnoreCase("COMPLETE")) {
+					.equalsIgnoreCase("COMPLETED")) {
 				parameterExtension.getExtensionparam().add("true");
 			} else {
 				parameterExtension.getExtensionparam().add("false");

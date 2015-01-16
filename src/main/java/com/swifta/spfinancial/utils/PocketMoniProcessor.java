@@ -28,7 +28,8 @@ public class PocketMoniProcessor extends MMOProcessor {
 				destinationresourceid, null, amount.longValue(),
 				extensionparameters.getMmoperator(), sendingdescription,
 				userPin);
-
+		moneyTransfer.setReceiver(Constants.POCKETMONI_AGENT_MSISDN);
+		moneyTransfer.setTeasypin(Constants.POCKETMONI_AGENT_PIN);
 		PocketMoneyClient pocketMoneyClient = null;
 		try {
 			pocketMoneyClient = new PocketMoneyClient();
@@ -54,6 +55,7 @@ public class PocketMoniProcessor extends MMOProcessor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		ParameterExtension parameterExtension = new ParameterExtension();
 		if (response != null) {
 			cashoutresponse.setDestinationpartnerbalanceafter(String
 					.valueOf(response.getClosingBalance()));// response.getOpeningBalance();
@@ -63,28 +65,32 @@ public class PocketMoniProcessor extends MMOProcessor {
 			cashoutresponse.setOrginatingpartnerbalanceafter(String
 					.valueOf(response.getOpeningBalance()));
 			cashoutresponse.setResponseMessage(response.getMessage());
-			cashoutresponse.setStatuscode(StatusCode.COMPLETED);
-			ParameterExtension parameterExtension = new ParameterExtension();
+			if (response.getError().equalsIgnoreCase("0")) {
+				cashoutresponse.setStatuscode(StatusCode.COMPLETED);
+			} else {
+				cashoutresponse.setStatuscode(StatusCode.FAILED);
+			}
+
 			parameterExtension.setSpTransactionid(response.getOtherReference());
 
 			parameterExtension.getExtensionparam().add(
 					String.valueOf(response.getError()));
 			parameterExtension.getExtensionparam().add(response.getMessage());
 
-			if (cashoutresponse.getStatuscode().toString()
-					.equalsIgnoreCase("COMPLETE")) {
-				parameterExtension.getExtensionparam().add("true");
-			} else {
-				parameterExtension.getExtensionparam().add("false");
-			}
-			parameterExtension.getExtensionparam().add(
-					String.valueOf(response.getTotalFailed()));
-			cashoutresponse.setExtensionparameters(parameterExtension);
 		} else {
 			cashoutresponse.setStatuscode(StatusCode.FAILED);
 			cashoutresponse
 					.setResponseMessage("There was no response from PocketMoni");
 		}
+		if (cashoutresponse.getStatuscode().toString()
+				.equalsIgnoreCase("COMPLETED")) {
+			parameterExtension.getExtensionparam().add("true");
+		} else {
+			parameterExtension.getExtensionparam().add("false");
+		}
+		// parameterExtension.getExtensionparam().add(
+		// String.valueOf(response.getTotalFailed()));
+		cashoutresponse.setExtensionparameters(parameterExtension);
 		return cashoutresponse;
 
 	}
