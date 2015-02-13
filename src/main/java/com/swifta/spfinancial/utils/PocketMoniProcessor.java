@@ -28,6 +28,7 @@ public class PocketMoniProcessor extends MMOProcessor {
 				destinationresourceid, null, amount.longValue(),
 				extensionparameters.getMmoperator(), sendingdescription,
 				userPin);
+		moneyTransfer.setSender(orginatingresourceid);
 		moneyTransfer.setReceiver(Constants.POCKETMONI_AGENT_MSISDN);
 		moneyTransfer.setTeasypin(Constants.POCKETMONI_AGENT_PIN);
 		PocketMoneyClient pocketMoneyClient = null;

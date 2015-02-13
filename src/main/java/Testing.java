@@ -22,6 +22,11 @@ public class Testing {
 
 		// performCashIn();
 		performCashOut();
+		/*
+		 * Error Code: -1 Message: Transaction timed out Other reference:
+		 * 201502121817495 Reference: 09FG201502121817353512123 Amount: 0.0
+		 * Date: null
+		 */
 	}
 
 	public static String generateReferencenNumber(int length) {
@@ -36,23 +41,43 @@ public class Testing {
 		SPfinancialPortImpl impl = new SPfinancialPortImpl();
 		// pocketmoni
 		// String userPin = "7005";
-		// String orginatingresourceid = "08063305711";
-		// String destinationresourceid = "2348076763191";
+		// String orginatingresourceid = "2348076763191";
+		// String destinationresourceid = "";
 
 		// teasymobile
-		// String userPin = "7005";
-		// String orginatingresourceid = "08063305711";
+		// customer number is in reciever 2348104001339
+		// agent number is in sender 2348170730938
+		// the originating resource id is hardcoded for this user. and pin too
+		String orginatingresourceid = "2348104001339";
+		String userPin = "";
+		// test data
 		// String destinationresourceid = "2348171000157";
-		// String destinationresourceid = "2348104001339";
+		// production data
+
+		String destinationresourceid = "";
+
 		// readycash
-		String userPin = "0000000000000000";
-		String destinationresourceid = "08034083054";
-		String orginatingresourceid = "070266989991";
+		// String userPin = "0000000000000000";
+		// reciever is the agent
+		// sender is the customer reference
+		// String destinationresourceid = "08034083054";
+		// String orginatingresourceid = "070266989991";
 
 		// fets
 		// String userPin = "5678";
-		// String orginatingresourceid = "2348170730549";
-		// String destinationresourceid = "2348170730549";
+		// customer is the reciever
+		// agent is the payer number
+		// String orginatingresourceid = "";
+		// String destinationresourceid = "2348063005168";
+
+		// fortis
+		// for fortis, the agentMDN and PIN are already in the library constants
+		// so just pass the destination url.
+		// String userPin = "6138";
+		// customer is the destmdn
+		// agent is the sourcemdn
+		// String orginatingresourceid = "";
+		// String destinationresourceid = "2348063305711";
 
 		String amount = "40";
 		String sendingdescription = "Payments";
@@ -158,7 +183,7 @@ public class Testing {
 		ParameterExtension extensionparameters = new ParameterExtension();
 		System.out
 				.println("--------------------------------After instantiating extension parameters");
-		extensionparameters.setMmoperator("fets");
+		extensionparameters.setMmoperator("pocketmoni");
 		extensionparameters.setSpTransactionid(generateReferencenNumber(12));
 		extensionparameters.getExtensionparam().add(userPin);
 		System.out

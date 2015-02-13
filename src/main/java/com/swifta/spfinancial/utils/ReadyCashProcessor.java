@@ -28,7 +28,7 @@ public class ReadyCashProcessor extends MMOProcessor {
 		// TODO Auto-generated method stub
 		logger.info("----------------------------------Hello World");
 		MoneyTransfer moneyTransfer = new MoneyTransfer();
-		String key = "ABCDEDF00000FFFF";
+		// String key = "ABCDEDF00000FFFF";
 		String password = "password";
 
 		moneyTransfer.setAmount(amount);

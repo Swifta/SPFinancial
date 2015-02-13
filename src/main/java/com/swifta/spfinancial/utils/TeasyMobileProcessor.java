@@ -25,7 +25,8 @@ public class TeasyMobileProcessor extends MMOProcessor {
 		MoneyTransfer teasymoneyTransfer = new MoneyTransfer(
 				destinationresourceid, amount, receivingdescription,
 				extensionparameters.getExtensionparam().get(0));
-		teasymoneyTransfer.setReceiver(Constants.TEASY_AGENT_MSISDN);
+		teasymoneyTransfer.setReceiver(orginatingresourceid);
+		teasymoneyTransfer.setSender(Constants.TEASY_AGENT_MSISDN);
 		teasymoneyTransfer.setTeasypin(Constants.TEASY_AGENT_PIN);
 		TeasyMobileClient teasyMobileClient;
 		MTransferResponseType response = null;

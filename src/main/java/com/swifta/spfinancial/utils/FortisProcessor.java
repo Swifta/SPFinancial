@@ -29,7 +29,7 @@ public class FortisProcessor extends MMOProcessor {
 
 		MoneyTransfer moneyTransfer = fortisClient.moneyTransfer;
 		moneyTransfer.setSourcePocketCode(Constants.SOURCEPOCKETCODEWALLET);
-		if (orginatingresourceid.isEmpty())
+		if (destinationresourceid.isEmpty())
 			moneyTransfer.setDestMdn(Constants.customerNumber);
 		else
 			moneyTransfer.setDestMdn(orginatingresourceid);

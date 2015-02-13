@@ -26,7 +26,7 @@ public class FETsProcessor extends MMOProcessor {
 			ParameterExtension extensionparameters) {
 		// TODO Auto-generated method stub
 		MoneyTransfer moneyTransfer = new MoneyTransfer();
-		moneyTransfer.setPayerNumber(orginatingresourceid);
+		moneyTransfer.setRecieverNumber(orginatingresourceid);
 		moneyTransfer.setAmount(amount.doubleValue());
 		// moneyTransfer.setBillerMerchantId(billerMerchantId);
 		moneyTransfer.setBillerTransactionRef(extensionparameters
@@ -35,7 +35,7 @@ public class FETsProcessor extends MMOProcessor {
 		moneyTransfer.setCharge(charge);
 		// moneyTransfer.setPayerWalletId(payerWalletId);
 		// moneyTransfer.setRecieverNumber(destinationresourceid);
-		moneyTransfer.setRecieverNumber(Constants.FETS_AGENT_MSISDN);
+		moneyTransfer.setPayerNumber(Constants.FETS_AGENT_MSISDN);
 		moneyTransfer.setRemarks(sendingdescription);
 		moneyTransfer
 				.setTransactionId(extensionparameters.getSpTransactionid());
