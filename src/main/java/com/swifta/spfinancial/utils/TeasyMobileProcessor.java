@@ -32,7 +32,8 @@ public class TeasyMobileProcessor extends MMOProcessor {
 		MTransferResponseType response = null;
 		try {
 			teasyMobileClient = new TeasyMobileClient();
-			logger.info("---------------------posting to teasymobile");
+			logger.info("---------------------posting to teasymobile and agent is =="
+					+ Constants.TEASY_AGENT_MSISDN);
 			response = teasyMobileClient.doCashout(teasymoneyTransfer);
 
 		} catch (Exception e) {

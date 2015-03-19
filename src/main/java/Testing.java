@@ -51,17 +51,18 @@ public class Testing {
 		String orginatingresourceid = "2348104001339";
 		String userPin = "";
 		// test data
-		// String destinationresourceid = "2348171000157";
+		String destinationresourceid = "2348171000157";
 		// production data
 
-		String destinationresourceid = "";
+		// String destinationresourceid = "";
 
 		// readycash
-		// String userPin = "0000000000000000";
+		// String userPin = "015567519128";
 		// reciever is the agent
 		// sender is the customer reference
-		// String destinationresourceid = "08034083054";
-		// String orginatingresourceid = "070266989991";
+		// String token = "";
+		// String orginatingresourceid = "2348063305711";
+		// String destinationresourceid = "";
 
 		// fets
 		// String userPin = "5678";
@@ -79,7 +80,7 @@ public class Testing {
 		// String orginatingresourceid = "";
 		// String destinationresourceid = "2348063305711";
 
-		String amount = "40";
+		String amount = "10";
 		String sendingdescription = "Payments";
 		String receivingdescription = "details";
 		ParameterExtension extensionparameters = new ParameterExtension();

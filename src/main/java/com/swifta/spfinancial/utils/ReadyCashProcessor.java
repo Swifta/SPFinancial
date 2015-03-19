@@ -36,18 +36,19 @@ public class ReadyCashProcessor extends MMOProcessor {
 		moneyTransfer.setAgentUsername("mats@mats.com");
 		moneyTransfer.setReadyCashPin(password);
 		// moneyTransfer.setReceiver(destinationresourceid);
-		moneyTransfer.setReceiver(Constants.READYCASH_AGENT_MSISDN);
-		moneyTransfer.setSender(orginatingresourceid);
+		// moneyTransfer.setReceiver(Constants.READYCASH_AGENT_MSISDN);
+		moneyTransfer.setReceiver(orginatingresourceid);
+		// moneyTransfer.setSender(orginatingresourceid);
 		List<String> extensionParam = extensionparameters.getExtensionparam();
 		moneyTransfer.setAgentPin(Constants.READYCASH_AGENT_PIN);
-		/*
-		 * if (extensionParam != null) { logger.info(
-		 * "--------------------------------extension parameter is not null so pin is set"
-		 * ); moneyTransfer.setAgentPin(extensionParam.get(0)); } else {
-		 * logger.info(
-		 * "--------------------------------extension parameter is null so default pin is set"
-		 * ); moneyTransfer.setAgentPin(Constants.READYCASH_AGENT_PIN); }
-		 */
+
+		if (extensionParam != null) {
+			logger.info("--------------------------------extension parameter is not null so pin is set");
+			moneyTransfer.setSender(extensionParam.get(0));
+		} else {
+			logger.info("--------------------------------extension parameter is null so THERE IS NO TOKEN TO BE PASSED");
+		}
+
 		// check that dev branch is working
 		logger.info("--------------------------------contents being sent"
 				+ moneyTransfer.toString());
