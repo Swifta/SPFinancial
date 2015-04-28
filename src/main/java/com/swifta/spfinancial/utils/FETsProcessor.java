@@ -4,8 +4,11 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.apache.axis2.AxisFault;
+
 import com.fets.mm.soap.services.FetsServiceStub.ServiceResponse;
 import com.ng.mats.psa.mt.fets.utils.FetsClient;
+import com.ng.mats.psa.mt.fets.utils.FetsPropertyValues;
 import com.ng.mats.psa.mt.fets.utils.MoneyTransfer;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashinresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashoutresponse;
@@ -13,11 +16,9 @@ import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Param
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.StatusCode;
 
 public class FETsProcessor extends MMOProcessor {
-	private FetsClient fetsClient = new FetsClient();
+	private FetsClient fetsClient = null;
 	private static final Logger logger = Logger.getLogger(FETsProcessor.class
 			.getName());
-	private long channelId = 1;
-	private long charge = 5;
 
 	@Override
 	public Cashoutresponse cashoutrequest(String orginatingresourceid,
@@ -25,17 +26,18 @@ public class FETsProcessor extends MMOProcessor {
 			String sendingdescription, String receivingdescription,
 			ParameterExtension extensionparameters) {
 		// TODO Auto-generated method stub
-		MoneyTransfer moneyTransfer = new MoneyTransfer();
-		moneyTransfer.setRecieverNumber(orginatingresourceid);
+		MoneyTransfer moneyTransfer = new FetsPropertyValues()
+				.getPropertyValues();
+		moneyTransfer.setPayerNumber(orginatingresourceid);
 		moneyTransfer.setAmount(amount.doubleValue());
 		// moneyTransfer.setBillerMerchantId(billerMerchantId);
 		moneyTransfer.setBillerTransactionRef(extensionparameters
 				.getSpTransactionid());
-		moneyTransfer.setChannelId(channelId);
-		moneyTransfer.setCharge(charge);
+		// moneyTransfer.setChannelId(channelId);
+		// moneyTransfer.setCharge(charge);
 		// moneyTransfer.setPayerWalletId(payerWalletId);
 		// moneyTransfer.setRecieverNumber(destinationresourceid);
-		moneyTransfer.setPayerNumber(Constants.FETS_AGENT_MSISDN);
+		// moneyTransfer.setPayerNumber(Constants.FETS_AGENT_MSISDN);
 		moneyTransfer.setRemarks(sendingdescription);
 		moneyTransfer
 				.setTransactionId(extensionparameters.getSpTransactionid());
@@ -43,6 +45,12 @@ public class FETsProcessor extends MMOProcessor {
 		if (extensionParam != null) {
 			logger.info("--------------------------------extension parameter is not null so pin is set");
 			moneyTransfer.setTransactionPin(extensionParam.get(0));
+		}
+		try {
+			fetsClient = new FetsClient(moneyTransfer);
+		} catch (AxisFault e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		ServiceResponse serviceResponse = fetsClient.doCashOut(moneyTransfer);
 		Cashoutresponse cashoutResponse = new Cashoutresponse();
@@ -92,14 +100,15 @@ public class FETsProcessor extends MMOProcessor {
 			String sendingdescription, String receivingdescription,
 			ParameterExtension extensionparameters) {
 		// TODO Auto-generated method stub
-		MoneyTransfer moneyTransfer = new MoneyTransfer();
+		MoneyTransfer moneyTransfer = new FetsPropertyValues()
+				.getPropertyValues();
 		moneyTransfer.setPayerNumber(orginatingresourceid);
 		moneyTransfer.setAmount(amount.doubleValue());
 		// moneyTransfer.setBillerMerchantId(billerMerchantId);
 		moneyTransfer.setBillerTransactionRef(extensionparameters
 				.getSpTransactionid());
-		moneyTransfer.setChannelId(channelId);
-		moneyTransfer.setCharge(charge);
+		// moneyTransfer.setChannelId(channelId);
+		// moneyTransfer.setCharge(charge);
 		// moneyTransfer.setPayerWalletId(payerWalletId);
 		moneyTransfer.setRecieverNumber(destinationresourceid);
 		moneyTransfer.setRemarks(sendingdescription);
@@ -109,6 +118,12 @@ public class FETsProcessor extends MMOProcessor {
 		if (extensionParam != null) {
 			logger.info("--------------------------------extension parameter is not null so pin is set");
 			moneyTransfer.setTransactionPin(extensionParam.get(0));
+		}
+		try {
+			fetsClient = new FetsClient(moneyTransfer);
+		} catch (AxisFault e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		ServiceResponse serviceResponse = fetsClient.doCashIn(moneyTransfer);
 		Cashinresponse cashinResponse = new Cashinresponse();
@@ -138,6 +153,8 @@ public class FETsProcessor extends MMOProcessor {
 	public Double balanceRequest(String orginatingresourceid,
 			ParameterExtension extensionparameters) {
 		// TODO Auto-generated method stub
+		MoneyTransfer moneyTransfer = new FetsPropertyValues()
+				.getPropertyValues();
 		return null;
 	}
 

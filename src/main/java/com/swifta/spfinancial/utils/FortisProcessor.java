@@ -27,15 +27,15 @@ public class FortisProcessor extends MMOProcessor {
 		FortisClient fortisClient = new FortisClient(Constants.account,
 				Constants.TXNLOGIN);
 
-		MoneyTransfer moneyTransfer = fortisClient.moneyTransfer;
-		moneyTransfer.setSourcePocketCode(Constants.SOURCEPOCKETCODEWALLET);
-		if (destinationresourceid.isEmpty())
-			moneyTransfer.setDestMdn(Constants.customerNumber);
-		else
-			moneyTransfer.setDestMdn(orginatingresourceid);
-		moneyTransfer.setConfirmed("true");
-		moneyTransfer.setAgentCode(Constants.agentCode);
-		moneyTransfer.setDestPocketCode(Constants.DESTINATIONPOCKETCODEWALLET);
+		MoneyTransfer moneyTransfer = fortisClient.getMoneyTransfer();
+		// moneyTransfer.setSourcePocketCode(Constants.SOURCEPOCKETCODEWALLET);
+		// if (destinationresourceid.isEmpty())
+		// moneyTransfer.setDestMdn(Constants.customerNumber);
+		// else
+		moneyTransfer.setDestMdn(orginatingresourceid);
+		// moneyTransfer.setConfirmed("true");
+		// moneyTransfer.setAgentCode(Constants.agentCode);
+		// moneyTransfer.setDestPocketCode(Constants.DESTINATIONPOCKETCODEWALLET);
 		moneyTransfer.setAmount(String.valueOf(amount));
 		Response response = fortisClient
 				.performCashoutUnregistered(moneyTransfer);
@@ -101,15 +101,16 @@ public class FortisProcessor extends MMOProcessor {
 		FortisClient fortisClient = new FortisClient(Constants.account,
 				Constants.TXNLOGIN);
 
-		MoneyTransfer moneyTransfer = fortisClient.moneyTransfer;
-		moneyTransfer.setSourcePocketCode(Constants.SOURCEPOCKETCODEWALLET);
-		if (orginatingresourceid.isEmpty())
-			moneyTransfer.setDestMdn(Constants.customerNumber);
-		else
-			moneyTransfer.setDestMdn(orginatingresourceid);
-		moneyTransfer.setConfirmed("true");
-		moneyTransfer.setAgentCode(Constants.agentCode);
-		moneyTransfer.setDestPocketCode(Constants.DESTINATIONPOCKETCODEWALLET);
+		MoneyTransfer moneyTransfer = fortisClient.getMoneyTransfer();
+		// //
+		// moneyTransfer.setSourcePocketCode(Constants.SOURCEPOCKETCODEWALLET);
+		// if (orginatingresourceid.isEmpty())
+		// moneyTransfer.setDestMdn(Constants.customerNumber);
+		// else
+		moneyTransfer.setDestMdn(orginatingresourceid);
+		// moneyTransfer.setConfirmed("true");
+		// moneyTransfer.setAgentCode(Constants.agentCode);
+		// moneyTransfer.setDestPocketCode(Constants.DESTINATIONPOCKETCODEWALLET);
 		moneyTransfer.setAmount(String.valueOf(amount));
 		Response response = fortisClient.performCashin(moneyTransfer);
 		logger.info("-----------------------After initiating login"

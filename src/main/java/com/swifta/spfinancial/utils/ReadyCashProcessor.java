@@ -8,6 +8,7 @@ import org.apache.axis2.AxisFault;
 
 import com.ng.mats.psa.mt.readycash.model.MoneyTransfer;
 import com.ng.mats.psa.mt.readycash.util.ReadyCashClient;
+import com.ng.mats.psa.mt.readycash.util.ReadyCashPropertyValues;
 import com.readycashng.www.ws.api._1_0.AgentServiceServiceStub.ServiceResponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashinresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashoutresponse;
@@ -27,18 +28,19 @@ public class ReadyCashProcessor extends MMOProcessor {
 
 		// TODO Auto-generated method stub
 		logger.info("----------------------------------Hello World");
-		MoneyTransfer moneyTransfer = new MoneyTransfer();
+		MoneyTransfer moneyTransfer = new ReadyCashPropertyValues()
+				.getPropertyValues();
 		// String key = "ABCDEDF00000FFFF";
 		String password = "password";
 
 		moneyTransfer.setAmount(amount);
 		moneyTransfer.setMmo(extensionparameters.getMmoperator());
-		moneyTransfer.setAgentUsername("mats@mats.com");
-		moneyTransfer.setReadyCashPin(password);
+		// moneyTransfer.setAgentUsername("mats@mats.com");
+		// moneyTransfer.setReadyCashPin(password);
 		// moneyTransfer.setReceiver(destinationresourceid);
 		// moneyTransfer.setReceiver(Constants.READYCASH_AGENT_MSISDN);
 		moneyTransfer.setReceiver(orginatingresourceid);
-		// moneyTransfer.setSender(orginatingresourceid);
+		moneyTransfer.setSender(destinationresourceid);
 		List<String> extensionParam = extensionparameters.getExtensionparam();
 		moneyTransfer.setAgentPin(Constants.READYCASH_AGENT_PIN);
 
@@ -54,7 +56,7 @@ public class ReadyCashProcessor extends MMOProcessor {
 				+ moneyTransfer.toString());
 		try {
 			logger.info("--------------------------------inside the try catch");
-			readyCashClient = new ReadyCashClient();
+			readyCashClient = new ReadyCashClient(moneyTransfer);
 		} catch (AxisFault e) {
 			// TODO Auto-generated catch block
 			logger.info("--------------------------------AxisFault Exception thrown"
@@ -112,7 +114,8 @@ public class ReadyCashProcessor extends MMOProcessor {
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
 		logger.info("----------------------------------Hello World");
-		MoneyTransfer moneyTransfer = new MoneyTransfer();
+		MoneyTransfer moneyTransfer = new ReadyCashPropertyValues()
+				.getPropertyValues();
 		String key = "ABCDEDF00000FFFF";
 		String password = "password";
 
@@ -132,6 +135,15 @@ public class ReadyCashProcessor extends MMOProcessor {
 		// check that dev branch is working
 		logger.info("--------------------------------contents being sent"
 				+ moneyTransfer.toString());
+		try {
+			logger.info("--------------------------------inside the try catch");
+			readyCashClient = new ReadyCashClient(moneyTransfer);
+		} catch (AxisFault e) {
+			// TODO Auto-generated catch block
+			logger.info("--------------------------------AxisFault Exception thrown"
+					+ e.getMessage());
+			e.printStackTrace();
+		}
 		ServiceResponse serviceResponse = readyCashClient
 				.performCashIn(moneyTransfer);
 		Cashinresponse cashinresponse = new Cashinresponse();

@@ -24,13 +24,9 @@ public class PocketMoniProcessor extends MMOProcessor {
 		if (extensionparameters != null) {
 			userPin = extensionparameters.getExtensionparam().get(0);
 		}
-		MoneyTransfer moneyTransfer = new MoneyTransfer(orginatingresourceid,
-				destinationresourceid, null, amount.longValue(),
-				extensionparameters.getMmoperator(), sendingdescription,
-				userPin);
-		moneyTransfer.setSender(orginatingresourceid);
-		moneyTransfer.setReceiver(Constants.POCKETMONI_AGENT_MSISDN);
-		moneyTransfer.setTeasypin(Constants.POCKETMONI_AGENT_PIN);
+
+		// moneyTransfer.setReceiver(Constants.POCKETMONI_AGENT_MSISDN);
+		// moneyTransfer.setTeasypin(Constants.POCKETMONI_AGENT_PIN);
 		PocketMoneyClient pocketMoneyClient = null;
 		try {
 			pocketMoneyClient = new PocketMoneyClient();
@@ -38,9 +34,17 @@ public class PocketMoniProcessor extends MMOProcessor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		MoneyTransfer moneyTransfer = pocketMoneyClient.getMoneyTransfer();
+		moneyTransfer.setSender(orginatingresourceid);
+		moneyTransfer.setReceiver(destinationresourceid);
+		moneyTransfer.setAmount(amount.longValue());
+		moneyTransfer.setMmo(extensionparameters.getMmoperator());
+		moneyTransfer.setTeasypin(userPin);
+		moneyTransfer.setTeasyrequestreference(sendingdescription);
 		try {
-			pocketMoneyClient.configureSecurity();
+			pocketMoneyClient.configureSecurity(
+					moneyTransfer.getTrustStoreLocation(),
+					moneyTransfer.getTrustStorePassword());
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -106,10 +110,10 @@ public class PocketMoniProcessor extends MMOProcessor {
 		if (extensionparameters != null) {
 			userPin = extensionparameters.getExtensionparam().get(0);
 		}
-		MoneyTransfer moneyTransfer = new MoneyTransfer(orginatingresourceid,
-				destinationresourceid, null, amount.longValue(),
-				extensionparameters.getMmoperator(), sendingdescription,
-				userPin);
+		// MoneyTransfer moneyTransfer = new MoneyTransfer(orginatingresourceid,
+		// destinationresourceid, null, amount.longValue(),
+		// extensionparameters.getMmoperator(), sendingdescription,
+		// userPin);
 
 		PocketMoneyClient pocketMoneyClient = null;
 		try {
@@ -118,9 +122,18 @@ public class PocketMoniProcessor extends MMOProcessor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		MoneyTransfer moneyTransfer = pocketMoneyClient.getMoneyTransfer();
+		moneyTransfer.setSender(orginatingresourceid);
+		moneyTransfer.setReceiver(destinationresourceid);
+		moneyTransfer.setAmount(amount.longValue());
+		moneyTransfer.setMmo(extensionparameters.getMmoperator());
+		moneyTransfer.setTeasypin(userPin);
+		moneyTransfer.setTeasyrequestreference(sendingdescription);
 
 		try {
-			pocketMoneyClient.configureSecurity();
+			pocketMoneyClient.configureSecurity(
+					moneyTransfer.getTrustStoreLocation(),
+					moneyTransfer.getTrustStorePassword());
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

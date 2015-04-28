@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import com.mobilemoney.services.mwallet.MPWalletServiceStub.MTransferResponseType;
 import com.mobilemoney.services.mwallet.TeasyMobileClient;
+import com.mobilemoney.services.mwallet.TeasyMobilePropertyValues;
 import com.ng.mats.psa.mt.teasymobile.model.MoneyTransfer;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashinresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashoutresponse;
@@ -21,26 +22,42 @@ public class TeasyMobileProcessor extends MMOProcessor {
 			String sendingdescription, String receivingdescription,
 			ParameterExtension extensionparameters) {
 		Cashoutresponse cashoutresponse = new Cashoutresponse();
+		MoneyTransfer teasymoneyTransfer = new TeasyMobilePropertyValues()
+				.getPropertyValues();
+		// TeasyMobileClient teasyMobileClient = new TeasyMobileClient();
 
-		MoneyTransfer teasymoneyTransfer = new MoneyTransfer(
-				destinationresourceid, amount, receivingdescription,
-				extensionparameters.getExtensionparam().get(0));
+		// MoneyTransfer teasymoneyTransfer = new MoneyTransfer(
+		// destinationresourceid, amount, receivingdescription,
+		// extensionparameters.getExtensionparam().get(0));
 		teasymoneyTransfer.setReceiver(orginatingresourceid);
-		teasymoneyTransfer.setSender(Constants.TEASY_AGENT_MSISDN);
-		teasymoneyTransfer.setTeasypin(Constants.TEASY_AGENT_PIN);
+		teasymoneyTransfer.setAmount(amount);
+		teasymoneyTransfer.setReference(receivingdescription);
+		teasymoneyTransfer.setTeasypin(extensionparameters.getExtensionparam()
+				.get(0));
+		// teasymoneyTransfer.setSender(Constants.TEASY_AGENT_MSISDN);
+		// teasymoneyTransfer.setTeasypin(Constants.TEASY_AGENT_PIN);
 		TeasyMobileClient teasyMobileClient;
 		MTransferResponseType response = null;
+		// MBalanceResponse response = null;
 		try {
-			teasyMobileClient = new TeasyMobileClient();
+			teasyMobileClient = new TeasyMobileClient(teasymoneyTransfer);
 			logger.info("---------------------posting to teasymobile and agent is =="
-					+ Constants.TEASY_AGENT_MSISDN);
-			response = teasyMobileClient.doCashout(teasymoneyTransfer);
+					+ teasymoneyTransfer.getSender());
+			// response = teasyMobileClient.getBalance(teasymoneyTransfer);
+			// response = teasyMobileClient.doCashout(teasymoneyTransfer);
+			response = teasyMobileClient.doCashIn(teasymoneyTransfer);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if (response != null) {
+			logger.info("---------------------response message gotten from Teasy is =="
+					+ response.getResponseMessage());
+			logger.info("---------------------response status gotten from Teasy is =="
+					+ response.getStatus());
+			logger.info("---------------------response transaction id gotten from Teasy is =="
+					+ response.getTransactionId());
 			if (response.getStatus() == 0) {
 				response.setResponseMessage("Transaction Successful");
 				logger.info("---------------------response returned as "
@@ -57,7 +74,8 @@ public class TeasyMobileProcessor extends MMOProcessor {
 
 			cashoutresponse.setResponseMessage(response.getResponseMessage());
 			ParameterExtension parameterExtension = new ParameterExtension();
-			parameterExtension.setSpTransactionid(response.getTransactionId());
+			// uncomment this pls
+			// parameterExtension.setSpTransactionid(response.getTransactionId());
 			parameterExtension.getExtensionparam().add(
 					String.valueOf(response.getStatus()));
 			parameterExtension.getExtensionparam().add(
@@ -91,7 +109,7 @@ public class TeasyMobileProcessor extends MMOProcessor {
 		TeasyMobileClient teasyMobileClient;
 		MTransferResponseType response = null;
 		try {
-			teasyMobileClient = new TeasyMobileClient();
+			teasyMobileClient = new TeasyMobileClient(teasymoneyTransfer);
 			System.out.println("posting to teasymobile >>>"
 					+ teasymoneyTransfer.toString());
 			response = teasyMobileClient.doCashIn(teasymoneyTransfer);
