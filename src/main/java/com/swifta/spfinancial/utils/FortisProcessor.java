@@ -9,10 +9,15 @@ import com.ng.mats.psa.mt.fortis.util.MoneyTransfer;
 import com.ng.mats.psa.mt.fortis.xmlprocessor.Message;
 import com.ng.mats.psa.mt.fortis.xmlprocessor.RefID;
 import com.ng.mats.psa.mt.fortis.xmlprocessor.Response;
+import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Airtimesalesresponse;
+import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Balanceresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashinresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashoutresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.ParameterExtension;
+import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Paybillsresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.StatusCode;
+import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Transfertobankresponse;
+import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Verifycashoutresponse;
 
 public class FortisProcessor extends MMOProcessor {
 	private static final Logger logger = Logger.getLogger(FortisProcessor.class
@@ -152,8 +157,51 @@ public class FortisProcessor extends MMOProcessor {
 	}
 
 	@Override
-	public Double balanceRequest(String orginatingresourceid,
+	public Verifycashoutresponse verifycashoutrequest(
+			String orginatingresourceid, String subscriberphonenumber,
+			String amount, String referencenumber,
 			ParameterExtension extensionparameters) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Transfertobankresponse transfertobank(String orginatingresourceid,
+			String amount, String narration,
+			ParameterExtension extensionparameters) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Paybillsresponse paybillsrequest(String orginatingresourceid,
+			String merchantcode, String amount, String sendingdescription,
+			String receivingdescription, ParameterExtension extensionparameters) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Airtimesalesresponse airtimesalesrequest(
+			String orginatingresourceid, String beneficiarynumber,
+			String serviceprovider, String amount,
+			ParameterExtension extensionparameters) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Balanceresponse balancerequest(String orginatingresourceid,
+			ParameterExtension extensionparameters) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Cashoutresponse cashoutunregisteredrequest(
+			String orginatingresourceid, String subscriberphonenumber,
+			BigDecimal amount, String referencenumber, String referencecode,
+			String receivingdescription, ParameterExtension extensionparameters) {
 		// TODO Auto-generated method stub
 		return null;
 	}

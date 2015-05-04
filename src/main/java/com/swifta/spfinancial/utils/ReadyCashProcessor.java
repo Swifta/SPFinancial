@@ -9,11 +9,16 @@ import org.apache.axis2.AxisFault;
 import com.ng.mats.psa.mt.readycash.model.MoneyTransfer;
 import com.ng.mats.psa.mt.readycash.util.ReadyCashClient;
 import com.ng.mats.psa.mt.readycash.util.ReadyCashPropertyValues;
-import com.readycashng.www.ws.api._1_0.AgentServiceServiceStub.ServiceResponse;
+import com.readycashng.www.ws.api._1_0.test.AgentServiceServiceStub.ServiceResponse;
+import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Airtimesalesresponse;
+import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Balanceresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashinresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashoutresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.ParameterExtension;
+import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Paybillsresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.StatusCode;
+import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Transfertobankresponse;
+import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Verifycashoutresponse;
 
 public class ReadyCashProcessor extends MMOProcessor {
 	private static final Logger logger = Logger
@@ -169,8 +174,51 @@ public class ReadyCashProcessor extends MMOProcessor {
 	}
 
 	@Override
-	public Double balanceRequest(String orginatingresourceid,
+	public Verifycashoutresponse verifycashoutrequest(
+			String orginatingresourceid, String subscriberphonenumber,
+			String amount, String referencenumber,
 			ParameterExtension extensionparameters) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Transfertobankresponse transfertobank(String orginatingresourceid,
+			String amount, String narration,
+			ParameterExtension extensionparameters) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Paybillsresponse paybillsrequest(String orginatingresourceid,
+			String merchantcode, String amount, String sendingdescription,
+			String receivingdescription, ParameterExtension extensionparameters) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Airtimesalesresponse airtimesalesrequest(
+			String orginatingresourceid, String beneficiarynumber,
+			String serviceprovider, String amount,
+			ParameterExtension extensionparameters) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Balanceresponse balancerequest(String orginatingresourceid,
+			ParameterExtension extensionparameters) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Cashoutresponse cashoutunregisteredrequest(
+			String orginatingresourceid, String subscriberphonenumber,
+			BigDecimal amount, String referencenumber, String referencecode,
+			String receivingdescription, ParameterExtension extensionparameters) {
 		// TODO Auto-generated method stub
 		return null;
 	}

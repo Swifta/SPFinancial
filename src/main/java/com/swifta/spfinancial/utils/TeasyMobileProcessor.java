@@ -3,14 +3,20 @@ package com.swifta.spfinancial.utils;
 import java.math.BigDecimal;
 import java.util.logging.Logger;
 
+import com.mobilemoney.services.mwallet.MPWalletServiceStub.MBalanceResponse;
 import com.mobilemoney.services.mwallet.MPWalletServiceStub.MTransferResponseType;
 import com.mobilemoney.services.mwallet.TeasyMobileClient;
 import com.mobilemoney.services.mwallet.TeasyMobilePropertyValues;
 import com.ng.mats.psa.mt.teasymobile.model.MoneyTransfer;
+import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Airtimesalesresponse;
+import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Balanceresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashinresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashoutresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.ParameterExtension;
+import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Paybillsresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.StatusCode;
+import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Transfertobankresponse;
+import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Verifycashoutresponse;
 
 public class TeasyMobileProcessor extends MMOProcessor {
 	private static final Logger logger = Logger
@@ -24,28 +30,18 @@ public class TeasyMobileProcessor extends MMOProcessor {
 		Cashoutresponse cashoutresponse = new Cashoutresponse();
 		MoneyTransfer teasymoneyTransfer = new TeasyMobilePropertyValues()
 				.getPropertyValues();
-		// TeasyMobileClient teasyMobileClient = new TeasyMobileClient();
-
-		// MoneyTransfer teasymoneyTransfer = new MoneyTransfer(
-		// destinationresourceid, amount, receivingdescription,
-		// extensionparameters.getExtensionparam().get(0));
 		teasymoneyTransfer.setReceiver(orginatingresourceid);
 		teasymoneyTransfer.setAmount(amount);
 		teasymoneyTransfer.setReference(receivingdescription);
 		teasymoneyTransfer.setTeasypin(extensionparameters.getExtensionparam()
 				.get(0));
-		// teasymoneyTransfer.setSender(Constants.TEASY_AGENT_MSISDN);
-		// teasymoneyTransfer.setTeasypin(Constants.TEASY_AGENT_PIN);
 		TeasyMobileClient teasyMobileClient;
 		MTransferResponseType response = null;
-		// MBalanceResponse response = null;
 		try {
 			teasyMobileClient = new TeasyMobileClient(teasymoneyTransfer);
 			logger.info("---------------------posting to teasymobile and agent is =="
 					+ teasymoneyTransfer.getSender());
-			// response = teasyMobileClient.getBalance(teasymoneyTransfer);
-			// response = teasyMobileClient.doCashout(teasymoneyTransfer);
-			response = teasyMobileClient.doCashIn(teasymoneyTransfer);
+			response = teasyMobileClient.doCashout(teasymoneyTransfer);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -151,8 +147,109 @@ public class TeasyMobileProcessor extends MMOProcessor {
 	}
 
 	@Override
-	public Double balanceRequest(String orginatingresourceid,
+	public Verifycashoutresponse verifycashoutrequest(
+			String orginatingresourceid, String subscriberphonenumber,
+			String amount, String referencenumber,
 			ParameterExtension extensionparameters) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Transfertobankresponse transfertobank(String orginatingresourceid,
+			String amount, String narration,
+			ParameterExtension extensionparameters) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Paybillsresponse paybillsrequest(String orginatingresourceid,
+			String merchantcode, String amount, String sendingdescription,
+			String receivingdescription, ParameterExtension extensionparameters) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Airtimesalesresponse airtimesalesrequest(
+			String orginatingresourceid, String beneficiarynumber,
+			String serviceprovider, String amount,
+			ParameterExtension extensionparameters) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Balanceresponse balancerequest(String orginatingresourceid,
+			ParameterExtension extensionparameters) {
+		Balanceresponse balanceresponse = new Balanceresponse();
+		MoneyTransfer teasymoneyTransfer = new TeasyMobilePropertyValues()
+				.getPropertyValues();
+		teasymoneyTransfer.setReceiver(orginatingresourceid);
+		teasymoneyTransfer.setTeasypin(extensionparameters.getExtensionparam()
+				.get(0));
+		TeasyMobileClient teasyMobileClient;
+		MBalanceResponse response = null;
+		try {
+			teasyMobileClient = new TeasyMobileClient(teasymoneyTransfer);
+			logger.info("---------------------posting to teasymobile and agent is =="
+					+ teasymoneyTransfer.getSender());
+			response = teasyMobileClient.getBalance(teasymoneyTransfer);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (response != null) {
+			logger.info("---------------------response message gotten from Teasy is =="
+					+ response.getResponseMessage());
+			logger.info("---------------------response status gotten from Teasy is =="
+					+ response.getStatus());
+			if (response.getStatus() == 0) {
+				response.setResponseMessage("Transaction Successful");
+				logger.info("---------------------response returned as "
+						+ StatusCode.COMPLETED);
+				balanceresponse.setStatuscode(StatusCode.COMPLETED);
+			} else {
+				logger.info("---------------------response returned as "
+						+ StatusCode.REJECTED);
+				balanceresponse.setStatuscode(StatusCode.REJECTED);
+			}
+			balanceresponse
+					.setBalance(String.valueOf(response.getBalance() / 100));
+
+			balanceresponse.setResponseMessage(response.getResponseMessage());
+			ParameterExtension parameterExtension = new ParameterExtension();
+			// uncomment this pls
+			// parameterExtension.setSpTransactionid(response.getTransactionId());
+			parameterExtension.getExtensionparam().add(
+					String.valueOf(response.getStatus()));
+			parameterExtension.getExtensionparam().add(
+					response.getResponseMessage());
+			logger.info("-----------------------STATUS CODE IS :::::::"
+					+ balanceresponse.getStatuscode().toString());
+			if (balanceresponse.getStatuscode().toString()
+					.equalsIgnoreCase("COMPLETED")) {
+				parameterExtension.getExtensionparam().add("true");
+			} else {
+				parameterExtension.getExtensionparam().add("false");
+			}
+			balanceresponse.setExtensionparameters(parameterExtension);
+		} else {
+			logger.info("---------------------response returned as "
+					+ StatusCode.FAILED);
+			balanceresponse.setStatuscode(StatusCode.FAILED);
+		}
+		return balanceresponse;
+
+	}
+
+	@Override
+	public Cashoutresponse cashoutunregisteredrequest(
+			String orginatingresourceid, String subscriberphonenumber,
+			BigDecimal amount, String referencenumber, String referencecode,
+			String receivingdescription, ParameterExtension extensionparameters) {
 		// TODO Auto-generated method stub
 		return null;
 	}

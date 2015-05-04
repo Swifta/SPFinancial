@@ -2,10 +2,22 @@
 <wsdl:definitions name="spfinancials" targetNamespace="http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
   <wsdl:types>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0">
+    <xs:element name="airtimesalesrequest" type="tns:airtimesalesrequest"/>
+    <xs:element name="airtimesalesrequestResponse" type="tns:airtimesalesrequestResponse"/>
+    <xs:element name="balancerequest" type="tns:balancerequest"/>
+    <xs:element name="balancerequestResponse" type="tns:balancerequestResponse"/>
     <xs:element name="cashinrequest" type="tns:cashinrequest"/>
     <xs:element name="cashinrequestResponse" type="tns:cashinrequestResponse"/>
     <xs:element name="cashoutrequest" type="tns:cashoutrequest"/>
     <xs:element name="cashoutrequestResponse" type="tns:cashoutrequestResponse"/>
+    <xs:element name="cashoutunregisteredrequest" type="tns:cashoutunregisteredrequest"/>
+    <xs:element name="cashoutunregisteredrequestResponse" type="tns:cashoutunregisteredrequestResponse"/>
+    <xs:element name="paybillsrequest" type="tns:paybillsrequest"/>
+    <xs:element name="paybillsrequestResponse" type="tns:paybillsrequestResponse"/>
+    <xs:element name="transfertobankrequest" type="tns:transfertobankrequest"/>
+    <xs:element name="transfertobankrequestResponse" type="tns:transfertobankrequestResponse"/>
+    <xs:element name="verifycashoutrequest" type="tns:verifycashoutrequest"/>
+    <xs:element name="verifycashoutrequestResponse" type="tns:verifycashoutrequestResponse"/>
     <xs:complexType name="cashoutrequest">
         <xs:sequence>
             <xs:element minOccurs="0" name="orginatingresourceid" type="xs:string"/>
@@ -36,6 +48,127 @@
             <xs:element minOccurs="0" name="statuscode" type="tns:statusCode"/>
             <xs:element minOccurs="0" name="financialtransactionid" type="xs:string"/>
             <xs:element minOccurs="0" name="ResponseMessage" type="xs:string"/>
+            <xs:element minOccurs="0" name="extensionparameters" type="tns:parameterExtension"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="transfertobankrequest">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="orginatingresourceid" type="xs:string"/>
+            <xs:element minOccurs="0" name="amount" type="xs:string"/>
+            <xs:element minOccurs="0" name="narration" type="xs:string"/>
+            <xs:element minOccurs="0" name="extensionparameters" type="tns:parameterExtension"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="transfertobankrequestResponse">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="return" type="tns:transfertobankresponse"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="transfertobankresponse">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="ResponseMessage" type="xs:string"/>
+            <xs:element minOccurs="0" name="statuscode" type="tns:statusCode"/>
+            <xs:element minOccurs="0" name="extensionparameters" type="tns:parameterExtension"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="airtimesalesrequest">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="orginatingresourceid" type="xs:string"/>
+            <xs:element minOccurs="0" name="beneficiarynumber" type="xs:string"/>
+            <xs:element minOccurs="0" name="serviceprovider" type="xs:string"/>
+            <xs:element minOccurs="0" name="amount" type="xs:string"/>
+            <xs:element minOccurs="0" name="extensionparameters" type="tns:parameterExtension"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="airtimesalesrequestResponse">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="return" type="tns:airtimesalesresponse"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="airtimesalesresponse">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="ResponseMessage" type="xs:string"/>
+            <xs:element minOccurs="0" name="statuscode" type="tns:statusCode"/>
+            <xs:element minOccurs="0" name="extensionparameters" type="tns:parameterExtension"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="paybillsrequest">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="orginatingresourceid" type="xs:string"/>
+            <xs:element minOccurs="0" name="merchantcode" type="xs:string"/>
+            <xs:element minOccurs="0" name="amount" type="xs:string"/>
+            <xs:element minOccurs="0" name="sendingdescription" type="xs:string"/>
+            <xs:element minOccurs="0" name="receivingdescription" type="xs:string"/>
+            <xs:element minOccurs="0" name="extensionparameters" type="tns:parameterExtension"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="paybillsrequestResponse">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="return" type="tns:paybillsresponse"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="paybillsresponse">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="financialtransactionid" type="xs:string"/>
+            <xs:element minOccurs="0" name="ResponseMessage" type="xs:string"/>
+            <xs:element minOccurs="0" name="statuscode" type="tns:statusCode"/>
+            <xs:element minOccurs="0" name="extensionparameters" type="tns:parameterExtension"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="cashoutunregisteredrequest">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="orginatingresourceid" type="xs:string"/>
+            <xs:element minOccurs="0" name="subscriberphonenumber" type="xs:string"/>
+            <xs:element minOccurs="0" name="amount" type="xs:string"/>
+            <xs:element minOccurs="0" name="referencenumber" type="xs:string"/>
+            <xs:element minOccurs="0" name="referencecode" type="xs:string"/>
+            <xs:element minOccurs="0" name="receivingdescription" type="xs:string"/>
+            <xs:element minOccurs="0" name="extensionparameters" type="tns:parameterExtension"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="cashoutunregisteredrequestResponse">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="return" type="tns:cashoutresponse"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="balancerequest">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="orginatingresourceid" type="xs:string"/>
+            <xs:element minOccurs="0" name="extensionparameters" type="tns:parameterExtension"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="balancerequestResponse">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="return" type="tns:balanceresponse"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="balanceresponse">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="balance" type="xs:string"/>
+            <xs:element minOccurs="0" name="ResponseMessage" type="xs:string"/>
+            <xs:element minOccurs="0" name="statuscode" type="tns:statusCode"/>
+            <xs:element minOccurs="0" name="extensionparameters" type="tns:parameterExtension"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="verifycashoutrequest">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="orginatingresourceid" type="xs:string"/>
+            <xs:element minOccurs="0" name="subscriberphonenumber" type="xs:string"/>
+            <xs:element minOccurs="0" name="amount" type="xs:string"/>
+            <xs:element minOccurs="0" name="referencenumber" type="xs:string"/>
+            <xs:element minOccurs="0" name="extensionparameters" type="tns:parameterExtension"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="verifycashoutrequestResponse">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="return" type="tns:verifycashoutresponse"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="verifycashoutresponse">
+        <xs:sequence>
+            <xs:element minOccurs="0" name="financialtransactionid" type="xs:string"/>
+            <xs:element minOccurs="0" name="ResponseMessage" type="xs:string"/>
+            <xs:element minOccurs="0" name="statuscode" type="tns:statusCode"/>
             <xs:element minOccurs="0" name="extensionparameters" type="tns:parameterExtension"/>
         </xs:sequence>
     </xs:complexType>
@@ -76,8 +209,32 @@
     </xs:simpleType>
 </xs:schema>
   </wsdl:types>
+  <wsdl:message name="paybillsrequestResponse">
+    <wsdl:part name="parameters" element="tns:paybillsrequestResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="balancerequestResponse">
+    <wsdl:part name="parameters" element="tns:balancerequestResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cashinrequestResponse">
+    <wsdl:part name="parameters" element="tns:cashinrequestResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cashoutunregisteredrequestResponse">
+    <wsdl:part name="parameters" element="tns:cashoutunregisteredrequestResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="paybillsrequest">
+    <wsdl:part name="parameters" element="tns:paybillsrequest">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="cashoutrequest">
     <wsdl:part name="parameters" element="tns:cashoutrequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cashoutunregisteredrequest">
+    <wsdl:part name="parameters" element="tns:cashoutunregisteredrequest">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="cashinrequest">
@@ -88,8 +245,32 @@
     <wsdl:part name="parameters" element="tns:cashoutrequestResponse">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="cashinrequestResponse">
-    <wsdl:part name="parameters" element="tns:cashinrequestResponse">
+  <wsdl:message name="airtimesalesrequest">
+    <wsdl:part name="parameters" element="tns:airtimesalesrequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="transfertobankrequest">
+    <wsdl:part name="parameters" element="tns:transfertobankrequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="verifycashoutrequest">
+    <wsdl:part name="parameters" element="tns:verifycashoutrequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="balancerequest">
+    <wsdl:part name="parameters" element="tns:balancerequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="verifycashoutrequestResponse">
+    <wsdl:part name="parameters" element="tns:verifycashoutrequestResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="transfertobankrequestResponse">
+    <wsdl:part name="parameters" element="tns:transfertobankrequestResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="airtimesalesrequestResponse">
+    <wsdl:part name="parameters" element="tns:airtimesalesrequestResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:portType name="SPfinancial">
@@ -97,6 +278,42 @@
       <wsdl:input name="cashoutrequest" message="tns:cashoutrequest">
     </wsdl:input>
       <wsdl:output name="cashoutrequestResponse" message="tns:cashoutrequestResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="transfertobankrequest">
+      <wsdl:input name="transfertobankrequest" message="tns:transfertobankrequest">
+    </wsdl:input>
+      <wsdl:output name="transfertobankrequestResponse" message="tns:transfertobankrequestResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="airtimesalesrequest">
+      <wsdl:input name="airtimesalesrequest" message="tns:airtimesalesrequest">
+    </wsdl:input>
+      <wsdl:output name="airtimesalesrequestResponse" message="tns:airtimesalesrequestResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paybillsrequest">
+      <wsdl:input name="paybillsrequest" message="tns:paybillsrequest">
+    </wsdl:input>
+      <wsdl:output name="paybillsrequestResponse" message="tns:paybillsrequestResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cashoutunregisteredrequest">
+      <wsdl:input name="cashoutunregisteredrequest" message="tns:cashoutunregisteredrequest">
+    </wsdl:input>
+      <wsdl:output name="cashoutunregisteredrequestResponse" message="tns:cashoutunregisteredrequestResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="balancerequest">
+      <wsdl:input name="balancerequest" message="tns:balancerequest">
+    </wsdl:input>
+      <wsdl:output name="balancerequestResponse" message="tns:balancerequestResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="verifycashoutrequest">
+      <wsdl:input name="verifycashoutrequest" message="tns:verifycashoutrequest">
+    </wsdl:input>
+      <wsdl:output name="verifycashoutrequestResponse" message="tns:verifycashoutrequestResponse">
     </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="cashinrequest">
@@ -114,6 +331,60 @@
         <soap:body use="literal"/>
       </wsdl:input>
       <wsdl:output name="cashoutrequestResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="transfertobankrequest">
+      <soap:operation soapAction="transfertobankrequest" style="document"/>
+      <wsdl:input name="transfertobankrequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="transfertobankrequestResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="airtimesalesrequest">
+      <soap:operation soapAction="airtimesalesrequest" style="document"/>
+      <wsdl:input name="airtimesalesrequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="airtimesalesrequestResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cashoutunregisteredrequest">
+      <soap:operation soapAction="cashoutunregisteredrequest" style="document"/>
+      <wsdl:input name="cashoutunregisteredrequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="cashoutunregisteredrequestResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="paybillsrequest">
+      <soap:operation soapAction="paybillsrequest" style="document"/>
+      <wsdl:input name="paybillsrequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="paybillsrequestResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="balancerequest">
+      <soap:operation soapAction="balancerequest" style="document"/>
+      <wsdl:input name="balancerequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="balancerequestResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="verifycashoutrequest">
+      <soap:operation soapAction="verifycashoutrequest" style="document"/>
+      <wsdl:input name="verifycashoutrequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="verifycashoutrequestResponse">
         <soap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>

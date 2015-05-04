@@ -35,9 +35,11 @@ public class ObjectFactory {
     private final static QName _Cashoutrequest_QNAME = new QName("http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0", "cashoutrequest");
     private final static QName _BalancerequestResponse_QNAME = new QName("http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0", "balancerequestResponse");
     private final static QName _TransfertobankrequestResponse_QNAME = new QName("http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0", "transfertobankrequestResponse");
+    private final static QName _CashoutunregisteredrequestResponse_QNAME = new QName("http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0", "cashoutunregisteredrequestResponse");
     private final static QName _PaybillsrequestResponse_QNAME = new QName("http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0", "paybillsrequestResponse");
     private final static QName _AirtimesalesrequestResponse_QNAME = new QName("http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0", "airtimesalesrequestResponse");
     private final static QName _CashoutrequestResponse_QNAME = new QName("http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0", "cashoutrequestResponse");
+    private final static QName _Cashoutunregisteredrequest_QNAME = new QName("http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0", "cashoutunregisteredrequest");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1
@@ -79,6 +81,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link CashoutunregisteredrequestResponse }
+     * 
+     */
+    public CashoutunregisteredrequestResponse createCashoutunregisteredrequestResponse() {
+        return new CashoutunregisteredrequestResponse();
+    }
+
+    /**
      * Create an instance of {@link PaybillsrequestResponse }
      * 
      */
@@ -92,6 +102,14 @@ public class ObjectFactory {
      */
     public CashoutrequestResponse createCashoutrequestResponse() {
         return new CashoutrequestResponse();
+    }
+
+    /**
+     * Create an instance of {@link Cashoutunregisteredrequest }
+     * 
+     */
+    public Cashoutunregisteredrequest createCashoutunregisteredrequest() {
+        return new Cashoutunregisteredrequest();
     }
 
     /**
@@ -159,43 +177,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Cashoutresponse }
-     * 
-     */
-    public Cashoutresponse createCashoutresponse() {
-        return new Cashoutresponse();
-    }
-
-    /**
      * Create an instance of {@link Cashinresponse }
      * 
      */
     public Cashinresponse createCashinresponse() {
         return new Cashinresponse();
-    }
-
-    /**
-     * Create an instance of {@link Transfertobankresponse }
-     * 
-     */
-    public Transfertobankresponse createTransfertobankresponse() {
-        return new Transfertobankresponse();
-    }
-
-    /**
-     * Create an instance of {@link Verifycashoutresponse }
-     * 
-     */
-    public Verifycashoutresponse createVerifycashoutresponse() {
-        return new Verifycashoutresponse();
-    }
-
-    /**
-     * Create an instance of {@link Airtimesalesresponse }
-     * 
-     */
-    public Airtimesalesresponse createAirtimesalesresponse() {
-        return new Airtimesalesresponse();
     }
 
     /**
@@ -220,6 +206,38 @@ public class ObjectFactory {
      */
     public Paybillsresponse createPaybillsresponse() {
         return new Paybillsresponse();
+    }
+
+    /**
+     * Create an instance of {@link Cashoutresponse }
+     * 
+     */
+    public Cashoutresponse createCashoutresponse() {
+        return new Cashoutresponse();
+    }
+
+    /**
+     * Create an instance of {@link Transfertobankresponse }
+     * 
+     */
+    public Transfertobankresponse createTransfertobankresponse() {
+        return new Transfertobankresponse();
+    }
+
+    /**
+     * Create an instance of {@link Verifycashoutresponse }
+     * 
+     */
+    public Verifycashoutresponse createVerifycashoutresponse() {
+        return new Verifycashoutresponse();
+    }
+
+    /**
+     * Create an instance of {@link Airtimesalesresponse }
+     * 
+     */
+    public Airtimesalesresponse createAirtimesalesresponse() {
+        return new Airtimesalesresponse();
     }
 
     /**
@@ -322,6 +340,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link CashoutunregisteredrequestResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0", name = "cashoutunregisteredrequestResponse")
+    public JAXBElement<CashoutunregisteredrequestResponse> createCashoutunregisteredrequestResponse(CashoutunregisteredrequestResponse value) {
+        return new JAXBElement<CashoutunregisteredrequestResponse>(_CashoutunregisteredrequestResponse_QNAME, CashoutunregisteredrequestResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link PaybillsrequestResponse }{@code >}}
      * 
      */
@@ -346,6 +373,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0", name = "cashoutrequestResponse")
     public JAXBElement<CashoutrequestResponse> createCashoutrequestResponse(CashoutrequestResponse value) {
         return new JAXBElement<CashoutrequestResponse>(_CashoutrequestResponse_QNAME, CashoutrequestResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Cashoutunregisteredrequest }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0", name = "cashoutunregisteredrequest")
+    public JAXBElement<Cashoutunregisteredrequest> createCashoutunregisteredrequest(Cashoutunregisteredrequest value) {
+        return new JAXBElement<Cashoutunregisteredrequest>(_Cashoutunregisteredrequest_QNAME, Cashoutunregisteredrequest.class, null, value);
     }
 
 }
