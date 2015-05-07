@@ -59,7 +59,7 @@ public class FETsProcessor extends MMOProcessor {
 		if (serviceResponse != null) {
 			if (serviceResponse.getSuccess()) {
 				logger.info("--------------------------------serviceResponse is a success");
-				cashoutResponse.setStatuscode(StatusCode.COMPLETED);
+				cashoutResponse.setStatuscode(StatusCode.PENDING);
 			} else {
 				logger.info("--------------------------------serviceResponse is not a success");
 				cashoutResponse.setStatuscode(StatusCode.FAILED);
@@ -172,7 +172,8 @@ public class FETsProcessor extends MMOProcessor {
 		if (serviceResponse != null) {
 			logger.info("--------------------------------serviceResponse is not null");
 			verifycashoutresponse.setExtensionparameters(extensionparameters);
-			verifycashoutresponse.setFinancialtransactionid(referencenumber);
+			verifycashoutresponse.setFinancialtransactionid(serviceResponse
+					.getTnxRefNo());
 			verifycashoutresponse.setResponseMessage(serviceResponse
 					.getMessage());
 			if (serviceResponse.getSuccess()) {

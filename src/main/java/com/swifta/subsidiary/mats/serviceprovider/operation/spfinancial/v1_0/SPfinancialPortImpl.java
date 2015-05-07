@@ -15,7 +15,10 @@ import com.swifta.spfinancial.utils.TransactionService;
  * 
  */
 
-@javax.jws.WebService(serviceName = "spfinancials", portName = "SPfinancialPort", targetNamespace = "http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0", wsdlLocation = "/Users/user/Documents/swifta/SPfinancial/src/main/webapp/WEB-INF/wsdl/SPfinancial.wsdl", endpointInterface = "com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1_0.SPfinancial")
+@javax.jws.WebService(serviceName = "spfinancials", portName = "SPfinancialPort", targetNamespace = "http://swifta.com/subsidiary/mats/serviceprovider/operation/spfinancial/v1.0",
+// wsdlLocation =
+// "/Users/user/Documents/swifta/SPfinancial/src/main/webapp/WEB-INF/wsdl/SPfinancial.wsdl",
+wsdlLocation = "/home/ec2-user/wsdl/SPfinancial.wsdl", endpointInterface = "com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1_0.SPfinancial")
 public class SPfinancialPortImpl implements SPfinancial {
 
 	private static final Logger logger = Logger
