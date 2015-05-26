@@ -83,7 +83,7 @@ public class FortisProcessor extends MMOProcessor {
 				}
 
 				cashoutResponse.setDestinationpartnerbalanceafter("0");
-				cashoutResponse.setExtensionparameters(extensionparameters);
+				cashoutResponse.setExtensionparameters(parameterExtension);
 				cashoutResponse.setFinancialtransactionid("0");
 				cashoutResponse.setOrginatingpartnerbalanceafter("0");
 				cashoutResponse.setOrginatingpartnerfee("0");
@@ -124,16 +124,9 @@ public class FortisProcessor extends MMOProcessor {
 
 		if (response != null) {
 			logger.info("--------------------------------response is not null");
-			cashinResponse.setDestinationpartnerbalanceafter("0");
-			cashinResponse.setExtensionparameters(extensionparameters);
-			cashinResponse.setFinancialtransactionid("0");
-			cashinResponse.setOrginatingpartnerbalanceafter("0");
-			cashinResponse.setFee("0");
-
 			Message message = response.getMessage();
 			if (message != null) {
-
-				cashinResponse.setResponseMessage(message.getValue());
+				logger.info("--------------------------------message is not null");
 				boolean success = false;
 				if (message.getCode().equalsIgnoreCase("298")) {
 					success = true;
@@ -146,6 +139,29 @@ public class FortisProcessor extends MMOProcessor {
 					logger.info("--------------------------------response is not a success");
 					cashinResponse.setStatuscode(StatusCode.FAILED);
 				}
+
+				ParameterExtension parameterExtension = new ParameterExtension();
+				parameterExtension.setMmoperator(extensionparameters
+						.getMmoperator());
+				RefID refId = response.getRefID();
+				if (refId != null)
+					parameterExtension.setSpTransactionid(refId.getValue());
+				parameterExtension.getExtensionparam().add(
+						String.valueOf(message.getCode()));
+				parameterExtension.getExtensionparam().add(message.getValue());
+				if (cashinResponse.getStatuscode().toString()
+						.equalsIgnoreCase("COMPLETED")) {
+					parameterExtension.getExtensionparam().add("true");
+				} else {
+					parameterExtension.getExtensionparam().add("false");
+				}
+				logger.info("--------------------------------response is not null");
+				cashinResponse.setDestinationpartnerbalanceafter("0");
+				cashinResponse.setExtensionparameters(parameterExtension);
+				cashinResponse.setFinancialtransactionid("0");
+				cashinResponse.setOrginatingpartnerbalanceafter("0");
+				cashinResponse.setFee("0");
+
 			} else {
 				logger.info("--------------------------------message is null");
 			}

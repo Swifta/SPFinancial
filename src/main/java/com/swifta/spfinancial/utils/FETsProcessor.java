@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import org.apache.axis2.AxisFault;
 
-import com.fets.mm.soap.services.test.FetsServiceStub.ServiceResponse;
+import com.fets.mm.soap.services.FetsServiceStub.ServiceResponse;
 import com.ng.mats.psa.mt.fets.utils.FetsClient;
 import com.ng.mats.psa.mt.fets.utils.FetsPropertyValues;
 import com.ng.mats.psa.mt.fets.utils.MoneyTransfer;
@@ -82,7 +82,7 @@ public class FETsProcessor extends MMOProcessor {
 			}
 			logger.info("--------------------------------serviceResponse is not null");
 			cashoutResponse.setDestinationpartnerbalanceafter("0");
-			cashoutResponse.setExtensionparameters(extensionparameters);
+			cashoutResponse.setExtensionparameters(parameterExtension);
 			cashoutResponse.setFinancialtransactionid("0");
 			cashoutResponse.setOrginatingpartnerbalanceafter("0");
 			cashoutResponse.setOrginatingpartnerfee("0");
@@ -129,13 +129,6 @@ public class FETsProcessor extends MMOProcessor {
 		ServiceResponse serviceResponse = fetsClient.doCashIn(moneyTransfer);
 		Cashinresponse cashinResponse = new Cashinresponse();
 		if (serviceResponse != null) {
-			logger.info("--------------------------------serviceResponse is not null");
-			cashinResponse.setDestinationpartnerbalanceafter("0");
-			cashinResponse.setExtensionparameters(extensionparameters);
-			cashinResponse.setFinancialtransactionid("0");
-			cashinResponse.setOrginatingpartnerbalanceafter("0");
-			cashinResponse.setFee("0");
-			cashinResponse.setResponseMessage(serviceResponse.getMessage());
 			if (serviceResponse.getSuccess()) {
 				logger.info("--------------------------------serviceResponse is a success");
 				cashinResponse.setStatuscode(StatusCode.COMPLETED);
@@ -143,6 +136,29 @@ public class FETsProcessor extends MMOProcessor {
 				logger.info("--------------------------------serviceResponse is not a success");
 				cashinResponse.setStatuscode(StatusCode.FAILED);
 			}
+			logger.info("--------------------------------serviceResponse is not null");
+			ParameterExtension parameterExtension = new ParameterExtension();
+			parameterExtension.setMmoperator(extensionparameters
+					.getMmoperator());
+			parameterExtension
+					.setSpTransactionid(serviceResponse.getTnxRefNo());
+			parameterExtension.getExtensionparam().add(
+					String.valueOf(serviceResponse.getResponseCode()));
+			parameterExtension.getExtensionparam().add(
+					serviceResponse.getMessage());
+			if (cashinResponse.getStatuscode().toString()
+					.equalsIgnoreCase("COMPLETED")) {
+				parameterExtension.getExtensionparam().add("true");
+			} else {
+				parameterExtension.getExtensionparam().add("false");
+			}
+			cashinResponse.setDestinationpartnerbalanceafter("0");
+			cashinResponse.setExtensionparameters(parameterExtension);
+			cashinResponse.setFinancialtransactionid("0");
+			cashinResponse.setOrginatingpartnerbalanceafter("0");
+			cashinResponse.setFee("0");
+			cashinResponse.setResponseMessage(serviceResponse.getMessage());
+
 		} else {
 			logger.info("--------------------------------serviceResponse is null");
 		}
@@ -156,6 +172,7 @@ public class FETsProcessor extends MMOProcessor {
 			String amount, String referencenumber,
 			ParameterExtension extensionparameters) {
 		// TODO Auto-generated method stub
+
 		MoneyTransfer moneyTransfer = new FetsPropertyValues()
 				.getPropertyValues();
 		moneyTransfer.setReference(referencenumber);
@@ -171,7 +188,12 @@ public class FETsProcessor extends MMOProcessor {
 		Verifycashoutresponse verifycashoutresponse = new Verifycashoutresponse();
 		if (serviceResponse != null) {
 			logger.info("--------------------------------serviceResponse is not null");
-			verifycashoutresponse.setExtensionparameters(extensionparameters);
+			ParameterExtension parameterExtension = new ParameterExtension();
+			parameterExtension.setMmoperator(extensionparameters
+					.getMmoperator());
+			parameterExtension
+					.setSpTransactionid(serviceResponse.getTnxRefNo());
+			verifycashoutresponse.setExtensionparameters(parameterExtension);
 			verifycashoutresponse.setFinancialtransactionid(serviceResponse
 					.getTnxRefNo());
 			verifycashoutresponse.setResponseMessage(serviceResponse
@@ -210,8 +232,31 @@ public class FETsProcessor extends MMOProcessor {
 				.walletToBank(moneyTransfer);
 		Transfertobankresponse transfertobankresponse = new Transfertobankresponse();
 		if (serviceResponse != null) {
+			if (serviceResponse.getSuccess()) {
+				logger.info("--------------------------------serviceResponse is a success");
+				transfertobankresponse.setStatuscode(StatusCode.COMPLETED);
+			} else {
+				logger.info("--------------------------------serviceResponse is not a success");
+				transfertobankresponse.setStatuscode(StatusCode.FAILED);
+			}
 			logger.info("--------------------------------serviceResponse is not null");
-			transfertobankresponse.setExtensionparameters(extensionparameters);
+			ParameterExtension parameterExtension = new ParameterExtension();
+			parameterExtension.setMmoperator(extensionparameters
+					.getMmoperator());
+			parameterExtension
+					.setSpTransactionid(serviceResponse.getTnxRefNo());
+			parameterExtension.getExtensionparam().add(
+					String.valueOf(serviceResponse.getResponseCode()));
+			parameterExtension.getExtensionparam().add(
+					serviceResponse.getMessage());
+			if (transfertobankresponse.getStatuscode().toString()
+					.equalsIgnoreCase("COMPLETED")) {
+				parameterExtension.getExtensionparam().add("true");
+			} else {
+				parameterExtension.getExtensionparam().add("false");
+			}
+			logger.info("--------------------------------serviceResponse is not null");
+			transfertobankresponse.setExtensionparameters(parameterExtension);
 			transfertobankresponse.setResponseMessage(serviceResponse
 					.getMessage());
 			if (serviceResponse.getSuccess()) {
@@ -280,7 +325,7 @@ public class FETsProcessor extends MMOProcessor {
 		logger.info("--------------------------------serviceResponse is not null");
 		balanceresponse.setBalance(balance);
 		balanceresponse.setResponseMessage(balance);
-		balanceresponse.setExtensionparameters(extensionparameters);
+		balanceresponse.setExtensionparameters(parameterExtension);
 
 		return balanceresponse;
 	}

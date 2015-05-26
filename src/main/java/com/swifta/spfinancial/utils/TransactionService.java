@@ -18,6 +18,7 @@ public class TransactionService {
 	private FETsProcessor fetsProcessor = new FETsProcessor();
 	private FortisProcessor fortisProcessor = new FortisProcessor();
 	private ReadyCashProcessor readyCashProcessor = new ReadyCashProcessor();
+	private PagaProcessor pagaProcessor = new PagaProcessor();
 
 	public Cashinresponse performCashIn(String orginatingresourceid,
 			String destinationresourceid, String amount,
@@ -55,6 +56,11 @@ public class TransactionService {
 					orginatingresourceid, destinationresourceid, newAmount,
 					sendingdescription, receivingdescription,
 					extensionparameters);
+			break;
+		case "paga":
+			cashinresponse = pagaProcessor.cashinrequest(orginatingresourceid,
+					destinationresourceid, newAmount, sendingdescription,
+					receivingdescription, extensionparameters);
 			break;
 		default:
 			break;
@@ -96,6 +102,12 @@ public class TransactionService {
 			break;
 		case "fortis":
 			cashoutresponse = fortisProcessor.cashoutrequest(
+					orginatingresourceid, destinationresourceid, newAmount,
+					sendingdescription, receivingdescription,
+					extensionparameters);
+			break;
+		case "paga":
+			cashoutresponse = pagaProcessor.cashoutrequest(
 					orginatingresourceid, destinationresourceid, newAmount,
 					sendingdescription, receivingdescription,
 					extensionparameters);
@@ -149,6 +161,12 @@ public class TransactionService {
 					referencenumber, referencecode, receivingdescription,
 					extensionparameters);
 			break;
+		case "paga":
+			cashoutresponse = pagaProcessor.cashoutunregisteredrequest(
+					orginatingresourceid, subscriberphonenumber, newAmount,
+					referencenumber, referencecode, receivingdescription,
+					extensionparameters);
+			break;
 		default:
 			break;
 		}
@@ -185,6 +203,11 @@ public class TransactionService {
 			break;
 		case "fortis":
 			transfertobankresponse = fortisProcessor.transfertobank(
+					orginatingresourceid, amount, narration,
+					extensionparameters);
+			break;
+		case "paga":
+			transfertobankresponse = pagaProcessor.transfertobank(
 					orginatingresourceid, amount, narration,
 					extensionparameters);
 			break;
@@ -228,6 +251,11 @@ public class TransactionService {
 					orginatingresourceid, subscriberphonenumber, amount,
 					referencenumber, extensionparameters);
 			break;
+		case "paga":
+			verifycashoutresponse = pagaProcessor.verifycashoutrequest(
+					orginatingresourceid, subscriberphonenumber, amount,
+					referencenumber, extensionparameters);
+			break;
 		default:
 			break;
 		}
@@ -265,6 +293,11 @@ public class TransactionService {
 			break;
 		case "fortis":
 			airtimesalesresponse = fortisProcessor.airtimesalesrequest(
+					orginatingresourceid, beneficiarynumber, serviceprovider,
+					amount, extensionparameters);
+			break;
+		case "paga":
+			airtimesalesresponse = pagaProcessor.airtimesalesrequest(
 					orginatingresourceid, beneficiarynumber, serviceprovider,
 					amount, extensionparameters);
 			break;
@@ -314,6 +347,12 @@ public class TransactionService {
 					sendingdescription, receivingdescription,
 					extensionparameters);
 			break;
+		case "paga":
+			paybillsresponse = pagaProcessor.paybillsrequest(
+					orginatingresourceid, merchantcode, amount,
+					sendingdescription, receivingdescription,
+					extensionparameters);
+			break;
 		default:
 			break;
 		}
@@ -342,6 +381,10 @@ public class TransactionService {
 			break;
 		case "fortis":
 			balanceresponse = fortisProcessor.balancerequest(
+					orginatingresourceid, extensionparameters);
+			break;
+		case "paga":
+			balanceresponse = pagaProcessor.balancerequest(
 					orginatingresourceid, extensionparameters);
 			break;
 		default:

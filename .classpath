@@ -7,7 +7,6 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/PSACoreModuleEngine/lib/commons-lang-2.6.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/PocketMoniLibrary.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/ReadyCashLibrary.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/commons-codec_1.4.0.wso2v1.jar"/>
@@ -17,5 +16,6 @@
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/FortisLibrary.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/TeasyMobileLibrary.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/FetsLibrary.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/PagaLibrary.jar"/>
 	<classpathentry kind="output" path="target"/>
 </classpath>
