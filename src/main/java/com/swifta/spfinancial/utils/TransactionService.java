@@ -57,7 +57,7 @@ public class TransactionService {
 					sendingdescription, receivingdescription,
 					extensionparameters);
 			break;
-		case "paga":
+		case "pagatech":
 			cashinresponse = pagaProcessor.cashinrequest(orginatingresourceid,
 					destinationresourceid, newAmount, sendingdescription,
 					receivingdescription, extensionparameters);
@@ -106,7 +106,7 @@ public class TransactionService {
 					sendingdescription, receivingdescription,
 					extensionparameters);
 			break;
-		case "paga":
+		case "pagatech":
 			cashoutresponse = pagaProcessor.cashoutrequest(
 					orginatingresourceid, destinationresourceid, newAmount,
 					sendingdescription, receivingdescription,
@@ -161,7 +161,7 @@ public class TransactionService {
 					referencenumber, referencecode, receivingdescription,
 					extensionparameters);
 			break;
-		case "paga":
+		case "pagatech":
 			cashoutresponse = pagaProcessor.cashoutunregisteredrequest(
 					orginatingresourceid, subscriberphonenumber, newAmount,
 					referencenumber, referencecode, receivingdescription,
@@ -206,7 +206,7 @@ public class TransactionService {
 					orginatingresourceid, amount, narration,
 					extensionparameters);
 			break;
-		case "paga":
+		case "pagatech":
 			transfertobankresponse = pagaProcessor.transfertobank(
 					orginatingresourceid, amount, narration,
 					extensionparameters);
@@ -251,7 +251,7 @@ public class TransactionService {
 					orginatingresourceid, subscriberphonenumber, amount,
 					referencenumber, extensionparameters);
 			break;
-		case "paga":
+		case "pagatech":
 			verifycashoutresponse = pagaProcessor.verifycashoutrequest(
 					orginatingresourceid, subscriberphonenumber, amount,
 					referencenumber, extensionparameters);
@@ -296,7 +296,7 @@ public class TransactionService {
 					orginatingresourceid, beneficiarynumber, serviceprovider,
 					amount, extensionparameters);
 			break;
-		case "paga":
+		case "pagatech":
 			airtimesalesresponse = pagaProcessor.airtimesalesrequest(
 					orginatingresourceid, beneficiarynumber, serviceprovider,
 					amount, extensionparameters);
@@ -347,7 +347,7 @@ public class TransactionService {
 					sendingdescription, receivingdescription,
 					extensionparameters);
 			break;
-		case "paga":
+		case "pagatech":
 			paybillsresponse = pagaProcessor.paybillsrequest(
 					orginatingresourceid, merchantcode, amount,
 					sendingdescription, receivingdescription,
@@ -383,7 +383,7 @@ public class TransactionService {
 			balanceresponse = fortisProcessor.balancerequest(
 					orginatingresourceid, extensionparameters);
 			break;
-		case "paga":
+		case "pagatech":
 			balanceresponse = pagaProcessor.balancerequest(
 					orginatingresourceid, extensionparameters);
 			break;

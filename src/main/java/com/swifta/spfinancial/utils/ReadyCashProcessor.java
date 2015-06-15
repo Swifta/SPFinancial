@@ -9,7 +9,7 @@ import org.apache.axis2.AxisFault;
 import com.ng.mats.psa.mt.readycash.model.MoneyTransfer;
 import com.ng.mats.psa.mt.readycash.util.ReadyCashClient;
 import com.ng.mats.psa.mt.readycash.util.ReadyCashPropertyValues;
-import com.readycashng.www.ws.api._1_0.AgentServiceServiceStub.ServiceResponse;
+import com.readycashng.www.ws.api._1_0.test.AgentServiceServiceStub.ServiceResponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Airtimesalesresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Balanceresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashinresponse;
@@ -46,6 +46,8 @@ public class ReadyCashProcessor extends MMOProcessor {
 		// moneyTransfer.setReceiver(Constants.READYCASH_AGENT_MSISDN);
 		moneyTransfer.setReceiver(orginatingresourceid);
 		moneyTransfer.setSender(destinationresourceid);
+		logger.info("THE VERIFICATION CODE IS >>>>>>>>>>>>>"
+				+ destinationresourceid);
 		List<String> extensionParam = extensionparameters.getExtensionparam();
 		moneyTransfer.setAgentPin(Constants.READYCASH_AGENT_PIN);
 
@@ -74,13 +76,8 @@ public class ReadyCashProcessor extends MMOProcessor {
 		if (serviceResponse != null) {
 			if (serviceResponse.getCode().equals("0000"))
 				cashoutresponse.setStatuscode(StatusCode.COMPLETED);
-			else if (serviceResponse.getCode().equals("0051")
-					|| serviceResponse.getCode().equals("0091")
-					|| serviceResponse.getCode().equals("0096")
-					|| serviceResponse.getCode().equals("9999"))
-				cashoutresponse.setStatuscode(StatusCode.FAILED);
 			else
-				cashoutresponse.setStatuscode(StatusCode.PENDING);
+				cashoutresponse.setStatuscode(StatusCode.FAILED);
 
 			ParameterExtension newParam = new ParameterExtension();
 			newParam.setMmoperator(extensionparameters.getMmoperator());

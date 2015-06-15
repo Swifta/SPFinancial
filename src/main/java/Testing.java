@@ -44,14 +44,19 @@ public class Testing {
 		// String orginatingresourceid = "2348076763191";
 		// String destinationresourceid = "";
 
+		// paga
+		String userPin = "1234";
+		String orginatingresourceid = "07065525470";
+		String destinationresourceid = "122344";
+
 		// teasymobile
 		// customer number is in reciever 2348104001339
 		// agent number is in sender 2348170730938
 		// the originating resource id is hardcoded for this user. and pin too
-		String orginatingresourceid = "2348104001339";
-		String userPin = "";
+		// String orginatingresourceid = "2348104001339";
+		// String userPin = "";
 		// test data
-		String destinationresourceid = "2348171000157";
+		// String destinationresourceid = "2348171000157";
 		// production data
 
 		// String destinationresourceid = "";
@@ -86,7 +91,7 @@ public class Testing {
 		ParameterExtension extensionparameters = new ParameterExtension();
 		System.out
 				.println("--------------------------------After instantiating extension parameters");
-		extensionparameters.setMmoperator("teasymobile");
+		extensionparameters.setMmoperator("paga");
 		extensionparameters.setSpTransactionid(generateReferencenNumber(12));
 		extensionparameters.getExtensionparam().add(userPin);
 		System.out

@@ -1,6 +1,7 @@
 package com.swifta.spfinancial.utils;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.logging.Logger;
 
 import com.ng.mats.psa.mt.paga.data.MoneyTransfer;
@@ -29,19 +30,21 @@ public class PagaProcessor extends MMOProcessor {
 			ParameterExtension extensionparameters) {
 		MoneyTransfer moneyTransfer = new PagaPropertyValues()
 				.getPropertyValues();
-		moneyTransfer.setSenderPhone(orginatingresourceid);
+		moneyTransfer.setRecieverPhone(orginatingresourceid);
 		moneyTransfer.setAmount(amount.toString());
+		logger.info("THE WITHDRAWAL CODE IS >>>>>>>>>>>>>"
+				+ destinationresourceid);
 		moneyTransfer.setWithdrawalCode(destinationresourceid);
 		moneyTransfer.setMessage(sendingdescription);
 		moneyTransfer
 				.setTransactionId(extensionparameters.getSpTransactionid());
-		/*
-		 * List<String> extensionParam =
-		 * extensionparameters.getExtensionparam(); if (extensionParam != null)
-		 * { logger.info(
-		 * "--------------------------------extension parameter is not null so pin is set"
-		 * ); moneyTransfer.setTransactionPin(extensionParam.get(0)); }
-		 */
+		List<String> extensionParam = extensionparameters.getExtensionparam();
+		if (extensionParam != null) {
+			logger.info("--------------------------------extension parameter is not null so withdrawal code is set");
+			moneyTransfer.setWithdrawalCode(extensionParam.get(0));
+		} else {
+			logger.info("--------------------------------extension parameter is null so THERE IS NO WITHDRAWAL CODE TO BE PASSED");
+		}
 		pagaClient = new PagaClient();
 		PagaResponse pagaResponse = pagaClient.performCashOut(moneyTransfer);
 		Cashoutresponse cashoutResponse = new Cashoutresponse();
@@ -93,19 +96,20 @@ public class PagaProcessor extends MMOProcessor {
 			String receivingdescription, ParameterExtension extensionparameters) {
 		MoneyTransfer moneyTransfer = new PagaPropertyValues()
 				.getPropertyValues();
-		moneyTransfer.setSenderPhone(subscriberphonenumber);
+		moneyTransfer.setRecieverPhone(orginatingresourceid);
 		moneyTransfer.setAmount(amount.toString());
-		moneyTransfer.setWithdrawalCode(referencenumber);
+		logger.info("THE WITHDRAWAL CODE IS >>>>>>>>>>>>>" + referencecode);
+		moneyTransfer.setWithdrawalCode(referencecode);
 		moneyTransfer.setMessage(receivingdescription);
 		moneyTransfer
 				.setTransactionId(extensionparameters.getSpTransactionid());
-		/*
-		 * List<String> extensionParam =
-		 * extensionparameters.getExtensionparam(); if (extensionParam != null)
-		 * { logger.info(
-		 * "--------------------------------extension parameter is not null so pin is set"
-		 * ); moneyTransfer.setTransactionPin(extensionParam.get(0)); }
-		 */
+		List<String> extensionParam = extensionparameters.getExtensionparam();
+		if (extensionParam != null) {
+			logger.info("--------------------------------extension parameter is not null so withdrawal code is set");
+			moneyTransfer.setWithdrawalCode(extensionParam.get(0));
+		} else {
+			logger.info("--------------------------------extension parameter is null so THERE IS NO WITHDRAWAL CODE TO BE PASSED");
+		}
 		pagaClient = new PagaClient();
 		PagaResponse pagaResponse = pagaClient.performCashOut(moneyTransfer);
 		Cashoutresponse cashoutResponse = new Cashoutresponse();
@@ -157,7 +161,7 @@ public class PagaProcessor extends MMOProcessor {
 			ParameterExtension extensionparameters) {
 		MoneyTransfer moneyTransfer = new PagaPropertyValues()
 				.getPropertyValues();
-		moneyTransfer.setSenderPhone(orginatingresourceid);
+		moneyTransfer.setRecieverPhone(orginatingresourceid);
 		moneyTransfer.setAmount(amount.toString());
 		moneyTransfer.setWithdrawalCode(destinationresourceid);
 		moneyTransfer.setMessage(sendingdescription);

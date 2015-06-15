@@ -17,5 +17,7 @@
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/TeasyMobileLibrary.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/FetsLibrary.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/PagaLibrary.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/json-me.jar"/>
 	<classpathentry kind="output" path="target"/>
 </classpath>

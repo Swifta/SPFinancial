@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import org.apache.axis2.AxisFault;
 
-import com.fets.mm.soap.services.FetsServiceStub.ServiceResponse;
+import com.fets.mm.soap.services.test.FetsServiceStub.ServiceResponse;
 import com.ng.mats.psa.mt.fets.utils.FetsClient;
 import com.ng.mats.psa.mt.fets.utils.FetsPropertyValues;
 import com.ng.mats.psa.mt.fets.utils.MoneyTransfer;
