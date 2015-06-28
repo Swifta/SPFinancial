@@ -108,6 +108,7 @@ public class Testing {
 			subBalance = cashoutResponse.getDestinationpartnerbalanceafter();
 			ParameterExtension extensionParameters = cashoutResponse
 					.getExtensionparameters();
+
 			mmOperator = extensionParameters.getMmoperator();
 			System.out.println("--------------------------------MM Operator"
 					+ mmOperator);
