@@ -9,7 +9,7 @@ import org.apache.axis2.AxisFault;
 import com.ng.mats.psa.mt.readycash.model.MoneyTransfer;
 import com.ng.mats.psa.mt.readycash.util.ReadyCashClient;
 import com.ng.mats.psa.mt.readycash.util.ReadyCashPropertyValues;
-import com.readycashng.www.ws.api._1_0.test.AgentServiceServiceStub.ServiceResponse;
+import com.readycashng.www.ws.api._1_0.AgentServiceServiceStub.ServiceResponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Airtimesalesresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Balanceresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashinresponse;
