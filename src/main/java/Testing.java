@@ -45,9 +45,9 @@ public class Testing {
 		// String destinationresourceid = "";
 
 		// paga
-		String userPin = "1234";
-		String orginatingresourceid = "07065525470";
-		String destinationresourceid = "122344";
+		String userPin = "14104";
+		String orginatingresourceid = "08177777722";
+		String destinationresourceid = "14104";
 
 		// teasymobile
 		// customer number is in reciever 2348104001339
@@ -71,8 +71,8 @@ public class Testing {
 
 		// fets
 		// String userPin = "5678";
-		// customer is the reciever
-		// agent is the payer number
+		// // customer is the reciever
+		// // agent is the payer number
 		// String orginatingresourceid = "";
 		// String destinationresourceid = "2348063005168";
 
@@ -85,13 +85,13 @@ public class Testing {
 		// String orginatingresourceid = "";
 		// String destinationresourceid = "2348063305711";
 
-		String amount = "10";
+		String amount = "100";
 		String sendingdescription = "Payments";
 		String receivingdescription = "details";
 		ParameterExtension extensionparameters = new ParameterExtension();
 		System.out
 				.println("--------------------------------After instantiating extension parameters");
-		extensionparameters.setMmoperator("paga");
+		extensionparameters.setMmoperator("pagatech");
 		extensionparameters.setSpTransactionid(generateReferencenNumber(12));
 		extensionparameters.getExtensionparam().add(userPin);
 		System.out
@@ -109,10 +109,10 @@ public class Testing {
 			ParameterExtension extensionParameters = cashoutResponse
 					.getExtensionparameters();
 
-			mmOperator = extensionParameters.getMmoperator();
+			mmOperator = extensionparameters.getMmoperator();
 			System.out.println("--------------------------------MM Operator"
 					+ mmOperator);
-			List<String> extensionParameterList = extensionParameters
+			List<String> extensionParameterList = extensionparameters
 					.getExtensionparam();
 			Iterator<String> paramsIterator = extensionParameterList.iterator();
 			while (paramsIterator.hasNext()) {
@@ -120,7 +120,7 @@ public class Testing {
 						.println("--------------------------------Iterating...."
 								+ paramsIterator.next());
 			}
-			extensionParameters.getSpTransactionid();
+			extensionparameters.getSpTransactionid();
 			fee = cashoutResponse.getOrginatingpartnerfee();
 			transactionId = cashoutResponse.getFinancialtransactionid();
 			agentBalance = cashoutResponse.getOrginatingpartnerbalanceafter();

@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.json.me.JSONException;
+
 import com.ng.mats.psa.mt.paga.data.MoneyTransfer;
 import com.ng.mats.psa.mt.paga.data.PagaPropertyValues;
 import com.ng.mats.psa.mt.paga.data.PagaResponse;
@@ -31,7 +33,7 @@ public class PagaProcessor extends MMOProcessor {
 		MoneyTransfer moneyTransfer = new PagaPropertyValues()
 				.getPropertyValues();
 		moneyTransfer.setRecieverPhone(orginatingresourceid);
-		moneyTransfer.setAmount(amount.toString());
+		moneyTransfer.setAmount(amount.longValue());
 		logger.info("THE WITHDRAWAL CODE IS >>>>>>>>>>>>>"
 				+ destinationresourceid);
 		moneyTransfer.setWithdrawalCode(destinationresourceid);
@@ -46,7 +48,13 @@ public class PagaProcessor extends MMOProcessor {
 			logger.info("--------------------------------extension parameter is null so THERE IS NO WITHDRAWAL CODE TO BE PASSED");
 		}
 		pagaClient = new PagaClient();
-		PagaResponse pagaResponse = pagaClient.performCashOut(moneyTransfer);
+		PagaResponse pagaResponse = null;
+		try {
+			pagaResponse = pagaClient.performCashOut(moneyTransfer);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Cashoutresponse cashoutResponse = new Cashoutresponse();
 
 		if (pagaResponse != null) {
@@ -97,7 +105,7 @@ public class PagaProcessor extends MMOProcessor {
 		MoneyTransfer moneyTransfer = new PagaPropertyValues()
 				.getPropertyValues();
 		moneyTransfer.setRecieverPhone(orginatingresourceid);
-		moneyTransfer.setAmount(amount.toString());
+		moneyTransfer.setAmount(amount.longValue());
 		logger.info("THE WITHDRAWAL CODE IS >>>>>>>>>>>>>" + referencecode);
 		moneyTransfer.setWithdrawalCode(referencecode);
 		moneyTransfer.setMessage(receivingdescription);
@@ -111,7 +119,13 @@ public class PagaProcessor extends MMOProcessor {
 			logger.info("--------------------------------extension parameter is null so THERE IS NO WITHDRAWAL CODE TO BE PASSED");
 		}
 		pagaClient = new PagaClient();
-		PagaResponse pagaResponse = pagaClient.performCashOut(moneyTransfer);
+		PagaResponse pagaResponse = null;
+		try {
+			pagaResponse = pagaClient.performCashOut(moneyTransfer);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Cashoutresponse cashoutResponse = new Cashoutresponse();
 
 		if (pagaResponse != null) {
@@ -162,7 +176,7 @@ public class PagaProcessor extends MMOProcessor {
 		MoneyTransfer moneyTransfer = new PagaPropertyValues()
 				.getPropertyValues();
 		moneyTransfer.setRecieverPhone(orginatingresourceid);
-		moneyTransfer.setAmount(amount.toString());
+		moneyTransfer.setAmount(amount.longValue());
 		moneyTransfer.setWithdrawalCode(destinationresourceid);
 		moneyTransfer.setMessage(sendingdescription);
 		moneyTransfer
@@ -175,7 +189,13 @@ public class PagaProcessor extends MMOProcessor {
 		 * ); moneyTransfer.setTransactionPin(extensionParam.get(0)); }
 		 */
 		pagaClient = new PagaClient();
-		PagaResponse pagaResponse = pagaClient.performCashOut(moneyTransfer);
+		PagaResponse pagaResponse = null;
+		try {
+			pagaResponse = pagaClient.performCashOut(moneyTransfer);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Cashinresponse cashinresponse = new Cashinresponse();
 
 		if (pagaResponse != null) {
@@ -235,7 +255,7 @@ public class PagaProcessor extends MMOProcessor {
 		MoneyTransfer moneyTransfer = new PagaPropertyValues()
 				.getPropertyValues();
 		moneyTransfer.setSenderPhone(orginatingresourceid);
-		moneyTransfer.setAmount(amount.toString());
+		moneyTransfer.setAmount(Long.valueOf(amount));
 		moneyTransfer.setMessage(narration);
 		moneyTransfer
 				.setTransactionId(extensionparameters.getSpTransactionid());
@@ -247,7 +267,13 @@ public class PagaProcessor extends MMOProcessor {
 		 * ); moneyTransfer.setTransactionPin(extensionParam.get(0)); }
 		 */
 		pagaClient = new PagaClient();
-		PagaResponse pagaResponse = pagaClient.performCashOut(moneyTransfer);
+		PagaResponse pagaResponse = null;
+		try {
+			pagaResponse = pagaClient.performCashOut(moneyTransfer);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Transfertobankresponse transfertobankresponse = new Transfertobankresponse();
 
 		if (pagaResponse != null) {
