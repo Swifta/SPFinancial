@@ -58,7 +58,8 @@ public class PagaProcessor extends MMOProcessor {
 		Cashoutresponse cashoutResponse = new Cashoutresponse();
 
 		if (pagaResponse != null) {
-			if (pagaResponse.getResponseCode().equalsIgnoreCase("0")) {
+			logger.info(pagaResponse.getResponseCode());
+			if (pagaResponse.getResponseCode().equalsIgnoreCase("-1")) {
 				logger.info("--------------------------------serviceResponse is a success");
 				cashoutResponse.setStatuscode(StatusCode.COMPLETED);
 			} else {
