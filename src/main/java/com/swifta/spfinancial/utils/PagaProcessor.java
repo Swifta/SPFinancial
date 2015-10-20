@@ -24,6 +24,7 @@ public class PagaProcessor extends MMOProcessor {
 	private static final Logger logger = Logger.getLogger(PagaProcessor.class
 			.getName());
 	private PagaClient pagaClient;
+	PagaResponse pagaResponse = null;
 
 	@Override
 	public Cashoutresponse cashoutrequest(String orginatingresourceid,
@@ -48,7 +49,6 @@ public class PagaProcessor extends MMOProcessor {
 			logger.info("--------------------------------extension parameter is null so THERE IS NO WITHDRAWAL CODE TO BE PASSED");
 		}
 		pagaClient = new PagaClient();
-		PagaResponse pagaResponse = null;
 		try {
 			pagaResponse = pagaClient.performCashOut(moneyTransfer);
 		} catch (JSONException e) {
@@ -59,13 +59,13 @@ public class PagaProcessor extends MMOProcessor {
 
 		if (pagaResponse != null) {
 			logger.info(pagaResponse.getResponseCode());
-			if (pagaResponse.getResponseCode().equalsIgnoreCase("-1")) {
-				logger.info("--------------------------------serviceResponse is a success");
-				cashoutResponse.setStatuscode(StatusCode.COMPLETED);
-			} else {
-				logger.info("--------------------------------serviceResponse is not a success");
-				cashoutResponse.setStatuscode(StatusCode.FAILED);
-			}
+			// if (pagaResponse.getResponseCode().equalsIgnoreCase("-1")) {
+			// logger.info("--------------------------------serviceResponse is a success");
+			// cashoutResponse.setStatuscode(StatusCode.COMPLETED);
+			// } else {
+			// logger.info("--------------------------------serviceResponse is not a success");
+			// cashoutResponse.setStatuscode(StatusCode.FAILED);
+			// }
 
 			ParameterExtension parameterExtension = new ParameterExtension();
 			parameterExtension.setMmoperator(extensionparameters
