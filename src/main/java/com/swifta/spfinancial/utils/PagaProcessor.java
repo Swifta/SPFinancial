@@ -76,12 +76,12 @@ public class PagaProcessor extends MMOProcessor {
 					String.valueOf(pagaResponse.getResponseCode()));
 			parameterExtension.getExtensionparam().add(
 					pagaResponse.getResponseDescription());
-			if (cashoutResponse.getStatuscode().toString()
-					.equalsIgnoreCase("COMPLETED")) {
-				parameterExtension.getExtensionparam().add("true");
-			} else {
-				parameterExtension.getExtensionparam().add("false");
-			}
+			// if (cashoutResponse.getStatuscode().toString()
+			// .equalsIgnoreCase("COMPLETED")) {
+			// parameterExtension.getExtensionparam().add("true");
+			// } else {
+			// parameterExtension.getExtensionparam().add("false");
+			// }
 			logger.info("--------------------------------serviceResponse is not null");
 			cashoutResponse.setDestinationpartnerbalanceafter("0");
 			cashoutResponse.setExtensionparameters(parameterExtension);
