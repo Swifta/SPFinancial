@@ -61,13 +61,13 @@ public class PagaProcessor extends MMOProcessor {
 			logger.info("pagaResponseCode: " + pagaResponse.getResponseCode());
 			logger.info("pagaResponseDescription: "
 					+ pagaResponse.getResponseDescription());
-			// if (pagaResponse.getResponseCode().equalsIgnoreCase("-1")) {
-			// logger.info("--------------------------------serviceResponse is a success");
-			// cashoutResponse.setStatuscode(StatusCode.COMPLETED);
-			// } else {
-			// logger.info("--------------------------------serviceResponse is not a success");
-			// cashoutResponse.setStatuscode(StatusCode.FAILED);
-			// }
+			if (pagaResponse.getResponseCode().equalsIgnoreCase("0")) {
+				logger.info("--------------------------------serviceResponse is a success");
+				cashoutResponse.setStatuscode(StatusCode.COMPLETED);
+			} else {
+				logger.info("--------------------------------serviceResponse is not a success");
+				cashoutResponse.setStatuscode(StatusCode.FAILED);
+			}
 
 			ParameterExtension parameterExtension = new ParameterExtension();
 			parameterExtension.setMmoperator(extensionparameters
@@ -78,12 +78,12 @@ public class PagaProcessor extends MMOProcessor {
 					String.valueOf(pagaResponse.getResponseCode()));
 			parameterExtension.getExtensionparam().add(
 					pagaResponse.getResponseDescription());
-			// if (cashoutResponse.getStatuscode().toString()
-			// .equalsIgnoreCase("COMPLETED")) {
-			// parameterExtension.getExtensionparam().add("true");
-			// } else {
-			// parameterExtension.getExtensionparam().add("false");
-			// }
+			if (cashoutResponse.getStatuscode().toString()
+					.equalsIgnoreCase("COMPLETED")) {
+				parameterExtension.getExtensionparam().add("true");
+			} else {
+				parameterExtension.getExtensionparam().add("false");
+			}
 			logger.info("--------------------------------serviceResponse is not null");
 			cashoutResponse.setDestinationpartnerbalanceafter("0");
 			cashoutResponse.setExtensionparameters(parameterExtension);
