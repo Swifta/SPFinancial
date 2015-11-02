@@ -1,7 +1,18 @@
 package com.swifta.spfinancial.utils;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.logging.Logger;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import com.ng.mats.psa.mt.fortis.util.Constants;
 import com.ng.mats.psa.mt.fortis.util.FortisClient;
@@ -9,6 +20,7 @@ import com.ng.mats.psa.mt.fortis.util.MoneyTransfer;
 import com.ng.mats.psa.mt.fortis.xmlprocessor.Message;
 import com.ng.mats.psa.mt.fortis.xmlprocessor.RefID;
 import com.ng.mats.psa.mt.fortis.xmlprocessor.Response;
+import com.ng.mats.psa.mt.fortis.xmlprocessor.SctlID;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Airtimesalesresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Balanceresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashinresponse;
@@ -32,6 +44,8 @@ public class FortisProcessor extends MMOProcessor {
 		FortisClient fortisClient = new FortisClient(Constants.account,
 				Constants.TXNLOGIN);
 
+		logger.info(extensionparameters.getExtensionparam().get(0));
+
 		MoneyTransfer moneyTransfer = fortisClient.getMoneyTransfer();
 		// moneyTransfer.setSourcePocketCode(Constants.SOURCEPOCKETCODEWALLET);
 		// if (destinationresourceid.isEmpty())
@@ -41,6 +55,10 @@ public class FortisProcessor extends MMOProcessor {
 		// moneyTransfer.setConfirmed("true");
 		// moneyTransfer.setAgentCode(Constants.agentCode);
 		// moneyTransfer.setDestPocketCode(Constants.DESTINATIONPOCKETCODEWALLET);
+		moneyTransfer.setTransferId(extensionparameters.getExtensionparam()
+				.get(0));
+		moneyTransfer.setSecreteCode(extensionparameters.getExtensionparam()
+				.get(1));
 		moneyTransfer.setAmount(String.valueOf(amount));
 		Response response = fortisClient
 				.performCashoutUnregistered(moneyTransfer);
@@ -65,7 +83,7 @@ public class FortisProcessor extends MMOProcessor {
 					logger.info("--------------------------------response is not a success");
 					cashoutResponse.setStatuscode(StatusCode.FAILED);
 				}
-
+				cashoutResponse.setResponseMessage(message.getValue());
 				ParameterExtension parameterExtension = new ParameterExtension();
 				parameterExtension.setMmoperator(extensionparameters
 						.getMmoperator());
@@ -125,48 +143,51 @@ public class FortisProcessor extends MMOProcessor {
 		if (response != null) {
 			logger.info("--------------------------------response is not null");
 			Message message = response.getMessage();
+			SctlID sctlID = response.getSctlID();
+			logger.info("-----------------------SCTID"
+					+ response.getSctlID().getValue());
 			if (message != null) {
 				logger.info("--------------------------------message is not null");
+				System.out.println(message.getCode().equalsIgnoreCase("296"));
 				boolean success = false;
-				if (message.getCode().equalsIgnoreCase("298")) {
+				if (message.getCode().equalsIgnoreCase("296")) {
 					success = true;
 				}
 
+				ParameterExtension parameterExtension = new ParameterExtension();
 				if (success) {
 					logger.info("--------------------------------response is a success");
 					cashinResponse.setStatuscode(StatusCode.COMPLETED);
+					cashinResponse.setResponseMessage(response.getMessage()
+							.getValue());
+					parameterExtension.setMmoperator(extensionparameters
+							.getMmoperator());
+					parameterExtension.setSpTransactionid(sctlID.getValue());
+					// RefID refId = response.getRefID();
+					// parameterExtension.getExtensionparam().add(
+					// String.valueOf(message.getCode()));
+					// parameterExtension.getExtensionparam().add(
+					// message.getValue());
+					cashinResponse.setDestinationpartnerbalanceafter("0");
+					cashinResponse.setExtensionparameters(parameterExtension);
+					cashinResponse.setFinancialtransactionid("0");
+					cashinResponse.setOrginatingpartnerbalanceafter("0");
+					cashinResponse.setFee("0");
+					cashinResponse.setResponseMessage(message.getValue());
+					// if (refId != null)
+
 				} else {
 					logger.info("--------------------------------response is not a success");
 					cashinResponse.setStatuscode(StatusCode.FAILED);
 				}
 
-				ParameterExtension parameterExtension = new ParameterExtension();
-				parameterExtension.setMmoperator(extensionparameters
-						.getMmoperator());
-				RefID refId = response.getRefID();
-				if (refId != null)
-					parameterExtension.setSpTransactionid(refId.getValue());
-				parameterExtension.getExtensionparam().add(
-						String.valueOf(message.getCode()));
-				parameterExtension.getExtensionparam().add(message.getValue());
-				if (cashinResponse.getStatuscode().toString()
-						.equalsIgnoreCase("COMPLETED")) {
-					parameterExtension.getExtensionparam().add("true");
-				} else {
-					parameterExtension.getExtensionparam().add("false");
-				}
-				logger.info("--------------------------------response is not null");
-				cashinResponse.setDestinationpartnerbalanceafter("0");
-				cashinResponse.setExtensionparameters(parameterExtension);
-				cashinResponse.setFinancialtransactionid("0");
-				cashinResponse.setOrginatingpartnerbalanceafter("0");
-				cashinResponse.setFee("0");
-
 			} else {
 				logger.info("--------------------------------message is null");
+				cashinResponse.setStatuscode(StatusCode.FAILED);
 			}
 		} else {
 			logger.info("--------------------------------response is null");
+			cashinResponse.setStatuscode(StatusCode.FAILED);
 		}
 		return cashinResponse;
 
@@ -177,8 +198,48 @@ public class FortisProcessor extends MMOProcessor {
 			String orginatingresourceid, String subscriberphonenumber,
 			String amount, String referencenumber,
 			ParameterExtension extensionparameters) {
-		// TODO Auto-generated method stub
-		return null;
+		FortisClient fortisClient = new FortisClient(Constants.account,
+				Constants.TXNLOGIN);
+		MoneyTransfer moneyTransfer = fortisClient.getMoneyTransfer();
+		String response = fortisClient.getHistory(moneyTransfer);
+
+		Verifycashoutresponse verifycashoutresponse = new Verifycashoutresponse();
+
+		String responsecode = "";
+
+		if (!response.isEmpty()) {
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilder db = null;
+			try {
+				db = dbf.newDocumentBuilder();
+			} catch (ParserConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			Document document = null;
+			try {
+				// document = db.parse(response);
+				document = db.parse(new InputSource(new ByteArrayInputStream(
+						response.getBytes("utf-8"))));
+			} catch (SAXException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			NodeList nodeList = document.getElementsByTagName("message");
+
+			responsecode = nodeList.item(0).getAttributes()
+					.getNamedItem("code").getNodeValue();
+			System.out.println(nodeList.item(0).getAttributes()
+					.getNamedItem("code").getNodeValue());
+		}
+
+		if (responsecode.equals("39")) {
+			verifycashoutresponse.setStatuscode(StatusCode.COMPLETED);
+			verifycashoutresponse.setResponseMessage(response);
+			verifycashoutresponse.setFinancialtransactionid("0");
+		}
+
+		return verifycashoutresponse;
 	}
 
 	@Override
@@ -218,8 +279,77 @@ public class FortisProcessor extends MMOProcessor {
 			String orginatingresourceid, String subscriberphonenumber,
 			BigDecimal amount, String referencenumber, String referencecode,
 			String receivingdescription, ParameterExtension extensionparameters) {
-		// TODO Auto-generated method stub
-		return null;
+
+		FortisClient fortisClient = new FortisClient(Constants.account,
+				Constants.TXNLOGIN);
+
+		// logger.info(extensionparameters.getExtensionparam().get(0));
+
+		MoneyTransfer moneyTransfer = fortisClient.getMoneyTransfer();
+		// moneyTransfer.setSourcePocketCode(Constants.SOURCEPOCKETCODEWALLET);
+		// if (destinationresourceid.isEmpty())
+		// moneyTransfer.setDestMdn(Constants.customerNumber);
+		// else
+		moneyTransfer.setDestMdn(orginatingresourceid);
+		// moneyTransfer.setConfirmed("true");
+		// moneyTransfer.setAgentCode(Constants.agentCode);
+		// moneyTransfer.setDestPocketCode(Constants.DESTINATIONPOCKETCODEWALLET);
+		moneyTransfer.setTransferId(referencenumber);
+		moneyTransfer.setSecreteCode(referencecode);
+		moneyTransfer.setAmount(String.valueOf(amount));
+		Response response = fortisClient
+				.performCashoutUnregistered(moneyTransfer);
+		logger.info("-----------------------After initiating login"
+				+ response.toString());
+		Cashoutresponse cashoutResponse = new Cashoutresponse();
+
+		if (response != null) {
+			logger.info("--------------------------------response is not null");
+			Message message = response.getMessage();
+			if (message != null) {
+				logger.info("--------------------------------message is not null");
+				boolean success = false;
+				if (message.getCode().equalsIgnoreCase("680")) {
+					success = true;
+				}
+
+				if (success) {
+					logger.info("--------------------------------response is a success");
+					cashoutResponse.setStatuscode(StatusCode.COMPLETED);
+				} else {
+					logger.info("--------------------------------response is not a success");
+					cashoutResponse.setStatuscode(StatusCode.FAILED);
+				}
+
+				ParameterExtension parameterExtension = new ParameterExtension();
+				parameterExtension.setMmoperator(extensionparameters
+						.getMmoperator());
+				RefID refId = response.getRefID();
+				if (refId != null)
+					parameterExtension.setSpTransactionid(refId.getValue());
+				parameterExtension.getExtensionparam().add(
+						String.valueOf(message.getCode()));
+				parameterExtension.getExtensionparam().add(message.getValue());
+				if (cashoutResponse.getStatuscode().toString()
+						.equalsIgnoreCase("COMPLETED")) {
+					parameterExtension.getExtensionparam().add("true");
+				} else {
+					parameterExtension.getExtensionparam().add("false");
+				}
+
+				cashoutResponse.setDestinationpartnerbalanceafter("0");
+				cashoutResponse.setExtensionparameters(parameterExtension);
+				cashoutResponse.setFinancialtransactionid("0");
+				cashoutResponse.setOrginatingpartnerbalanceafter("0");
+				cashoutResponse.setOrginatingpartnerfee("0");
+				cashoutResponse.setResponseMessage(message.getValue());
+			} else {
+				logger.info("--------------------------------message is null");
+			}
+		} else {
+			logger.info("--------------------------------response is null");
+		}
+		return cashoutResponse;
 	}
 
 }

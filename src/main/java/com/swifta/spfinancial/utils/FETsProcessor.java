@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import org.apache.axis2.AxisFault;
 
-import com.fets.mm.soap.services.FetsServiceStub.ServiceResponse;
+import com.fets.test.mm.soap.services.FetsServiceStub.ServiceResponse;
 import com.ng.mats.psa.mt.fets.utils.FetsClient;
 import com.ng.mats.psa.mt.fets.utils.FetsPropertyValues;
 import com.ng.mats.psa.mt.fets.utils.MoneyTransfer;
@@ -57,7 +57,7 @@ public class FETsProcessor extends MMOProcessor {
 		Cashoutresponse cashoutResponse = new Cashoutresponse();
 
 		if (serviceResponse != null) {
-			if (serviceResponse.getSuccess()) {
+			if (serviceResponse.getResponseCode() == 0) {
 				logger.info("--------------------------------serviceResponse is a success");
 				cashoutResponse.setStatuscode(StatusCode.PENDING);
 			} else {
@@ -103,7 +103,7 @@ public class FETsProcessor extends MMOProcessor {
 		// TODO Auto-generated method stub
 		MoneyTransfer moneyTransfer = new FetsPropertyValues()
 				.getPropertyValues();
-		moneyTransfer.setPayerNumber(orginatingresourceid);
+		// moneyTransfer.setRecieverNumber(moneyTransfer.getRecieverNumber());
 		moneyTransfer.setAmount(amount.doubleValue());
 		// moneyTransfer.setBillerMerchantId(billerMerchantId);
 		moneyTransfer.setBillerTransactionRef(extensionparameters
@@ -111,27 +111,32 @@ public class FETsProcessor extends MMOProcessor {
 		// moneyTransfer.setChannelId(channelId);
 		// moneyTransfer.setCharge(charge);
 		// moneyTransfer.setPayerWalletId(payerWalletId);
-		moneyTransfer.setRecieverNumber(destinationresourceid);
+		moneyTransfer.setPayerNumber(orginatingresourceid);
 		moneyTransfer.setRemarks(sendingdescription);
 		moneyTransfer
 				.setTransactionId(extensionparameters.getSpTransactionid());
-		List<String> extensionParam = extensionparameters.getExtensionparam();
-		if (extensionParam != null) {
-			logger.info("--------------------------------extension parameter is not null so pin is set");
-			moneyTransfer.setTransactionPin(extensionParam.get(0));
-		}
+		// List<String> extensionParam =
+		// extensionparameters.getExtensionparam();
+		// if (extensionParam != null) {
+		// logger.info("--------------------------------extension parameter is not null so pin is set");
+		// moneyTransfer.setTransactionPin(moneyTransfer.getTransactionPin());
+		// }
 		try {
 			fetsClient = new FetsClient(moneyTransfer);
 		} catch (AxisFault e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ServiceResponse serviceResponse = fetsClient.doCashIn(moneyTransfer);
+		ServiceResponse serviceResponse = FetsClient.doCashIn(moneyTransfer);
 		Cashinresponse cashinResponse = new Cashinresponse();
+		// System.out.println(serviceResponse.);
+		// System.out.println(serviceResponse.getResponseCode());
+		String[] splited = null;
 		if (serviceResponse != null) {
-			if (serviceResponse.getSuccess()) {
+			if (serviceResponse.getResponseCode() == 0) {
 				logger.info("--------------------------------serviceResponse is a success");
 				cashinResponse.setStatuscode(StatusCode.COMPLETED);
+				splited = serviceResponse.getMessage().split("\\s+");
 			} else {
 				logger.info("--------------------------------serviceResponse is not a success");
 				cashinResponse.setStatuscode(StatusCode.FAILED);
@@ -140,12 +145,13 @@ public class FETsProcessor extends MMOProcessor {
 			ParameterExtension parameterExtension = new ParameterExtension();
 			parameterExtension.setMmoperator(extensionparameters
 					.getMmoperator());
-			parameterExtension
-					.setSpTransactionid(serviceResponse.getTnxRefNo());
+
+			parameterExtension.setSpTransactionid(splited[12]);
 			parameterExtension.getExtensionparam().add(
 					String.valueOf(serviceResponse.getResponseCode()));
 			parameterExtension.getExtensionparam().add(
 					serviceResponse.getMessage());
+
 			if (cashinResponse.getStatuscode().toString()
 					.equalsIgnoreCase("COMPLETED")) {
 				parameterExtension.getExtensionparam().add("true");
@@ -161,6 +167,7 @@ public class FETsProcessor extends MMOProcessor {
 
 		} else {
 			logger.info("--------------------------------serviceResponse is null");
+			cashinResponse.setStatuscode(StatusCode.FAILED);
 		}
 
 		return cashinResponse;
@@ -176,6 +183,7 @@ public class FETsProcessor extends MMOProcessor {
 		MoneyTransfer moneyTransfer = new FetsPropertyValues()
 				.getPropertyValues();
 		moneyTransfer.setReference(referencenumber);
+		// moneyTransfer.setReference(referencenumber);
 
 		try {
 			fetsClient = new FetsClient(moneyTransfer);
@@ -183,7 +191,7 @@ public class FETsProcessor extends MMOProcessor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ServiceResponse serviceResponse = fetsClient
+		com.fets.test.mm.soap.services.FetsServiceStub.ServiceResponse serviceResponse = fetsClient
 				.verifyCashout(moneyTransfer);
 		Verifycashoutresponse verifycashoutresponse = new Verifycashoutresponse();
 		if (serviceResponse != null) {
@@ -207,6 +215,7 @@ public class FETsProcessor extends MMOProcessor {
 			}
 		} else {
 			logger.info("--------------------------------serviceResponse is null");
+			verifycashoutresponse.setStatuscode(StatusCode.FAILED);
 		}
 
 		return verifycashoutresponse;
@@ -228,7 +237,7 @@ public class FETsProcessor extends MMOProcessor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ServiceResponse serviceResponse = fetsClient
+		com.fets.test.mm.soap.services.FetsServiceStub.ServiceResponse serviceResponse = fetsClient
 				.walletToBank(moneyTransfer);
 		Transfertobankresponse transfertobankresponse = new Transfertobankresponse();
 		if (serviceResponse != null) {
@@ -268,6 +277,7 @@ public class FETsProcessor extends MMOProcessor {
 			}
 		} else {
 			logger.info("--------------------------------serviceResponse is null");
+			transfertobankresponse.setStatuscode(StatusCode.FAILED);
 		}
 
 		return transfertobankresponse;
@@ -339,7 +349,7 @@ public class FETsProcessor extends MMOProcessor {
 		// TODO Auto-generated method stub
 		MoneyTransfer moneyTransfer = new FetsPropertyValues()
 				.getPropertyValues();
-		moneyTransfer.setRecipientMsisdn(subscriberphonenumber);
+		moneyTransfer.setRecipientMsisdn(orginatingresourceid);
 		moneyTransfer.setTxnRefNo(referencenumber);
 		moneyTransfer.setRedeemCode(referencecode);
 		moneyTransfer.setAmount(amount.doubleValue());
@@ -358,7 +368,7 @@ public class FETsProcessor extends MMOProcessor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		ServiceResponse serviceResponse = fetsClient
+		com.fets.test.mm.soap.services.FetsServiceStub.ServiceResponse serviceResponse = fetsClient
 				.doCashOutUnregistered(moneyTransfer);
 		Cashoutresponse cashoutResponse = new Cashoutresponse();
 
@@ -374,8 +384,7 @@ public class FETsProcessor extends MMOProcessor {
 			ParameterExtension parameterExtension = new ParameterExtension();
 			parameterExtension.setMmoperator(extensionparameters
 					.getMmoperator());
-			parameterExtension
-					.setSpTransactionid(serviceResponse.getTnxRefNo());
+			parameterExtension.setSpTransactionid(referencenumber);
 			parameterExtension.getExtensionparam().add(
 					String.valueOf(serviceResponse.getResponseCode()));
 			parameterExtension.getExtensionparam().add(
@@ -389,7 +398,8 @@ public class FETsProcessor extends MMOProcessor {
 			logger.info("--------------------------------serviceResponse is not null");
 			cashoutResponse.setDestinationpartnerbalanceafter("0");
 			cashoutResponse.setExtensionparameters(extensionparameters);
-			cashoutResponse.setFinancialtransactionid("0");
+			cashoutResponse.setFinancialtransactionid(serviceResponse
+					.getTnxRefNo());
 			cashoutResponse.setOrginatingpartnerbalanceafter("0");
 			cashoutResponse.setOrginatingpartnerfee("0");
 			cashoutResponse.setResponseMessage(serviceResponse.getMessage());

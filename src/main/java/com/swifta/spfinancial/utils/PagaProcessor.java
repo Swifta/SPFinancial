@@ -61,12 +61,15 @@ public class PagaProcessor extends MMOProcessor {
 			logger.info("pagaResponseCode: " + pagaResponse.getResponseCode());
 			logger.info("pagaResponseDescription: "
 					+ pagaResponse.getResponseDescription());
-			if (pagaResponse.getResponseCode().equalsIgnoreCase("0")) {
+			if ("0".equalsIgnoreCase(pagaResponse.getResponseCode())) {
 				logger.info("--------------------------------serviceResponse is a success");
 				cashoutResponse.setStatuscode(StatusCode.COMPLETED);
 			} else {
 				logger.info("--------------------------------serviceResponse is not a success");
 				cashoutResponse.setStatuscode(StatusCode.FAILED);
+				cashoutResponse.setResponseMessage(pagaResponse
+						.getResponseDescription());
+
 			}
 
 			ParameterExtension parameterExtension = new ParameterExtension();
@@ -138,6 +141,8 @@ public class PagaProcessor extends MMOProcessor {
 			} else {
 				logger.info("--------------------------------serviceResponse is not a success");
 				cashoutResponse.setStatuscode(StatusCode.FAILED);
+				cashoutResponse.setResponseMessage(pagaResponse
+						.getResponseDescription());
 			}
 
 			ParameterExtension parameterExtension = new ParameterExtension();
@@ -180,7 +185,7 @@ public class PagaProcessor extends MMOProcessor {
 				.getPropertyValues();
 		moneyTransfer.setRecieverPhone(orginatingresourceid);
 		moneyTransfer.setAmount(amount.longValue());
-		moneyTransfer.setWithdrawalCode(destinationresourceid);
+		moneyTransfer.setWithdrawalCode(null);
 		moneyTransfer.setMessage(sendingdescription);
 		moneyTransfer
 				.setTransactionId(extensionparameters.getSpTransactionid());
@@ -192,29 +197,37 @@ public class PagaProcessor extends MMOProcessor {
 		 * ); moneyTransfer.setTransactionPin(extensionParam.get(0)); }
 		 */
 		pagaClient = new PagaClient();
-		PagaResponse pagaResponse = null;
+		PagaResponse pagaResponse = new PagaResponse();
+
 		try {
-			pagaResponse = pagaClient.performCashOut(moneyTransfer);
-		} catch (JSONException e) {
+			pagaResponse = pagaClient.performCashIn(moneyTransfer);
+			if (pagaResponse != null)
+				logger.info("PagaResponseCode:::: "
+						+ pagaResponse.getResponseCode());
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			logger.warning(e.getMessage());
 			e.printStackTrace();
 		}
 		Cashinresponse cashinresponse = new Cashinresponse();
 
+		// if (pagaResponse.getr)
+
 		if (pagaResponse != null) {
-			if (pagaResponse.getResponseCode().equalsIgnoreCase("0")) {
+			if (pagaResponse.isCompleteStatus()) {
 				logger.info("--------------------------------serviceResponse is a success");
 				cashinresponse.setStatuscode(StatusCode.COMPLETED);
 			} else {
 				logger.info("--------------------------------serviceResponse is not a success");
 				cashinresponse.setStatuscode(StatusCode.FAILED);
+				cashinresponse.setResponseMessage(pagaResponse
+						.getResponseDescription());
 			}
 
 			ParameterExtension parameterExtension = new ParameterExtension();
 			parameterExtension.setMmoperator(extensionparameters
 					.getMmoperator());
-			parameterExtension.setSpTransactionid(pagaResponse
-					.getFinancialtransactionid());
+			parameterExtension.setSpTransactionid(pagaResponse.getTrxid());
 			parameterExtension.getExtensionparam().add(
 					String.valueOf(pagaResponse.getResponseCode()));
 			parameterExtension.getExtensionparam().add(
@@ -228,7 +241,8 @@ public class PagaProcessor extends MMOProcessor {
 			logger.info("--------------------------------serviceResponse is not null");
 			cashinresponse.setDestinationpartnerbalanceafter("0");
 			cashinresponse.setExtensionparameters(parameterExtension);
-			cashinresponse.setFinancialtransactionid("0");
+			cashinresponse.setFinancialtransactionid(pagaResponse
+					.getFinancialtransactionid());
 			cashinresponse.setOrginatingpartnerbalanceafter("0");
 			cashinresponse.setResponseMessage(pagaResponse
 					.getResponseDescription());

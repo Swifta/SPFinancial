@@ -9,7 +9,7 @@ import org.apache.axis2.AxisFault;
 import com.ng.mats.psa.mt.readycash.model.MoneyTransfer;
 import com.ng.mats.psa.mt.readycash.util.ReadyCashClient;
 import com.ng.mats.psa.mt.readycash.util.ReadyCashPropertyValues;
-import com.readycashng.www.ws.api._1_0.AgentServiceServiceStub.ServiceResponse;
+import com.readycashng.www.ws.api._1_0.test.AgentServiceServiceStub.ServiceResponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Airtimesalesresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Balanceresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashinresponse;
@@ -45,18 +45,18 @@ public class ReadyCashProcessor extends MMOProcessor {
 		// moneyTransfer.setReceiver(destinationresourceid);
 		// moneyTransfer.setReceiver(Constants.READYCASH_AGENT_MSISDN);
 		moneyTransfer.setReceiver(orginatingresourceid);
-		moneyTransfer.setSender(destinationresourceid);
+		moneyTransfer.setSender(extensionparameters.getExtensionparam().get(0));
 		logger.info("THE VERIFICATION CODE IS >>>>>>>>>>>>>"
 				+ destinationresourceid);
 		List<String> extensionParam = extensionparameters.getExtensionparam();
 		moneyTransfer.setAgentPin(Constants.READYCASH_AGENT_PIN);
 
-		if (extensionParam != null) {
-			logger.info("--------------------------------extension parameter is not null so pin is set");
-			moneyTransfer.setSender(extensionParam.get(0));
-		} else {
-			logger.info("--------------------------------extension parameter is null so THERE IS NO TOKEN TO BE PASSED");
-		}
+		// if (extensionParam != null) {
+		// logger.info("--------------------------------extension parameter is not null so pin is set");
+		// moneyTransfer.setSender(extensionParam.get(0));
+		// } else {
+		// logger.info("--------------------------------extension parameter is null so THERE IS NO TOKEN TO BE PASSED");
+		// }
 
 		// check that dev branch is working
 		logger.info("--------------------------------contents being sent"
@@ -74,11 +74,11 @@ public class ReadyCashProcessor extends MMOProcessor {
 				.performCashout(moneyTransfer);
 		Cashoutresponse cashoutresponse = new Cashoutresponse();
 		if (serviceResponse != null) {
-			if (serviceResponse.getCode().equals("0000"))
+			if (serviceResponse.getCode().equals("0000")) {
 				cashoutresponse.setStatuscode(StatusCode.COMPLETED);
-			else
+			} else {
 				cashoutresponse.setStatuscode(StatusCode.FAILED);
-
+			}
 			ParameterExtension newParam = new ParameterExtension();
 			newParam.setMmoperator(extensionparameters.getMmoperator());
 			newParam.setSpTransactionid(serviceResponse.getStan());
@@ -125,15 +125,17 @@ public class ReadyCashProcessor extends MMOProcessor {
 		moneyTransfer.setMmo(extensionparameters.getMmoperator());
 		moneyTransfer.setAgentUsername("mats@mats.com");
 		moneyTransfer.setReadyCashPin(password);
-		moneyTransfer.setReceiver(destinationresourceid);
+		moneyTransfer.setReceiver(orginatingresourceid);
 		List<String> extensionParam = extensionparameters.getExtensionparam();
-		if (extensionParam != null) {
-			logger.info("--------------------------------extension parameter is not null so pin is set");
-			moneyTransfer.setAgentPin(extensionParam.get(0));
-		} else {
-			logger.info("--------------------------------extension parameter is null so default pin is set");
-			moneyTransfer.setAgentPin("0000000000000000");
-		}
+		// if (extensionParam != null) {
+		// logger.info("--------------------------------extension parameter is not null so pin is set");
+		// moneyTransfer.setAgentPin(extensionparameters.getExtensionparam()
+		// .get(0));
+		// } else {
+		// logger.info("--------------------------------extension parameter is null so default pin is set");
+		// moneyTransfer.setAgentPin("0000000000000000");
+		// }
+		// moneyTransfer.setAgentPin("0000000000000000");
 		// check that dev branch is working
 		logger.info("--------------------------------contents being sent"
 				+ moneyTransfer.toString());

@@ -55,36 +55,42 @@ public class TeasyMobileProcessor extends MMOProcessor {
 			logger.info("---------------------response transaction id gotten from Teasy is =="
 					+ response.getTransactionId());
 			if (response.getStatus() == 0) {
+				ParameterExtension parameterExtension = new ParameterExtension();
+				// uncomment this pls
+				parameterExtension.setSpTransactionid(response
+						.getTransactionId());
+				parameterExtension.getExtensionparam().add(
+						String.valueOf(response.getStatus()));
+				parameterExtension.getExtensionparam().add(
+						response.getResponseMessage());
+				cashoutresponse.setExtensionparameters(parameterExtension);
+				// if (cashoutresponse.getStatuscode().toString()
+				// .equals("COMPLETED"))
+				// cashoutresponse.getStatuscode().
+				// if (cashoutresponse.getStatuscode().equals("COMPLETED")) {
+				// parameterExtension.getExtensionparam().add("true");
+				// } else {
+				// parameterExtension.getExtensionparam().add("false");
+				// }
 				response.setResponseMessage("Transaction Successful");
 				logger.info("---------------------response returned as "
 						+ StatusCode.COMPLETED);
 				cashoutresponse.setStatuscode(StatusCode.COMPLETED);
+
 			} else {
 				logger.info("---------------------response returned as "
 						+ StatusCode.REJECTED);
 				cashoutresponse.setStatuscode(StatusCode.REJECTED);
 			}
-			cashoutresponse.setDestinationpartnerbalanceafter(null);
-			cashoutresponse.setOrginatingpartnerbalanceafter(null);
-			cashoutresponse.setOrginatingpartnerfee(null);
+			cashoutresponse.setDestinationpartnerbalanceafter("0");
+			cashoutresponse.setOrginatingpartnerbalanceafter("0");
+			cashoutresponse.setOrginatingpartnerfee("0");
 
 			cashoutresponse.setResponseMessage(response.getResponseMessage());
-			ParameterExtension parameterExtension = new ParameterExtension();
-			// uncomment this pls
-			// parameterExtension.setSpTransactionid(response.getTransactionId());
-			parameterExtension.getExtensionparam().add(
-					String.valueOf(response.getStatus()));
-			parameterExtension.getExtensionparam().add(
-					response.getResponseMessage());
+
 			logger.info("-----------------------STATUS CODE IS :::::::"
 					+ cashoutresponse.getStatuscode().toString());
-			if (cashoutresponse.getStatuscode().toString()
-					.equalsIgnoreCase("COMPLETED")) {
-				parameterExtension.getExtensionparam().add("true");
-			} else {
-				parameterExtension.getExtensionparam().add("false");
-			}
-			cashoutresponse.setExtensionparameters(parameterExtension);
+
 		} else {
 			logger.info("---------------------response returned as "
 					+ StatusCode.FAILED);
@@ -99,9 +105,16 @@ public class TeasyMobileProcessor extends MMOProcessor {
 			String destinationresourceid, BigDecimal amount,
 			String sendingdescription, String receivingdescription,
 			ParameterExtension extensionparameters) {
+
 		Cashinresponse cashinresponse = new Cashinresponse();
-		MoneyTransfer teasymoneyTransfer = new MoneyTransfer(
-				destinationresourceid, amount, receivingdescription, "");
+		// MoneyTransfer teasymoneyTransfer = new MoneyTransfer(
+		// orginatingresourceid, amount, receivingdescription, "");
+		MoneyTransfer teasymoneyTransfer = new TeasyMobilePropertyValues()
+				.getPropertyValues();
+		teasymoneyTransfer.setReceiver(orginatingresourceid);
+		teasymoneyTransfer.setAmount(amount);
+		// teasymoneyTransfer.setTeasypin(extensionparameters.getExtensionparam()
+		// .get(0));
 		TeasyMobileClient teasyMobileClient;
 		MTransferResponseType response = null;
 		try {
@@ -120,24 +133,27 @@ public class TeasyMobileProcessor extends MMOProcessor {
 				logger.info("---------------------response returned as "
 						+ StatusCode.COMPLETED);
 				cashinresponse.setStatuscode(StatusCode.COMPLETED);
+				cashinresponse.setDestinationpartnerbalanceafter(null);
+				cashinresponse.setFinancialtransactionid(response
+						.getTransactionId());
+				cashinresponse.setOrginatingpartnerbalanceafter(null);
+				cashinresponse.setFee(null);
+				cashinresponse
+						.setResponseMessage(response.getResponseMessage());
+				ParameterExtension parameterExtension = new ParameterExtension();
+				parameterExtension.setSpTransactionid(response
+						.getTransactionId());
+				parameterExtension.getExtensionparam().add(
+						String.valueOf(response.getStatus()));
+				parameterExtension.getExtensionparam().add(
+						response.getResponseMessage());
+				cashinresponse.setExtensionparameters(parameterExtension);
 			} else {
 				logger.info("---------------------response returned as "
 						+ StatusCode.REJECTED);
 				cashinresponse.setStatuscode(StatusCode.REJECTED);
 			}
-			cashinresponse.setDestinationpartnerbalanceafter(null);
-			cashinresponse.setFinancialtransactionid(response
-					.getTransactionId());
-			cashinresponse.setOrginatingpartnerbalanceafter(null);
-			cashinresponse.setFee(null);
-			cashinresponse.setResponseMessage(response.getResponseMessage());
-			ParameterExtension parameterExtension = new ParameterExtension();
-			parameterExtension.setSpTransactionid(response.getTransactionId());
-			parameterExtension.getExtensionparam().add(
-					String.valueOf(response.getStatus()));
-			parameterExtension.getExtensionparam().add(
-					response.getResponseMessage());
-			cashinresponse.setExtensionparameters(parameterExtension);
+
 		} else {
 			cashinresponse.setStatuscode(StatusCode.FAILED);
 			logger.info("---------------------response returned as "
