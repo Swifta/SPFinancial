@@ -238,23 +238,23 @@ public class SPfinancialPortImpl implements SPfinancial {
 	 */
 	public com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Paybillsresponse paybillsrequest(
 			java.lang.String orginatingresourceid,
-			java.lang.String merchantcode,
+			java.lang.String billerPubicId,
 			java.lang.String amount,
-			java.lang.String sendingdescription,
-			java.lang.String receivingdescription,
+			java.lang.String billServicename,
+			java.lang.String accountNumber,
 			com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.ParameterExtension extensionparameters) {
 		logger.info("Executing operation paybillsrequest");
 		System.out.println(orginatingresourceid);
-		System.out.println(merchantcode);
+		System.out.println(billerPubicId);
 		System.out.println(amount);
-		System.out.println(sendingdescription);
-		System.out.println(receivingdescription);
+		System.out.println(billServicename);
+		System.out.println(accountNumber);
 		System.out.println(extensionparameters);
 		try {
 			TransactionService transactionService = new TransactionService();
 			return transactionService.paybillsrequest(orginatingresourceid,
-					merchantcode, amount, sendingdescription,
-					receivingdescription, extensionparameters);
+					billerPubicId, amount, billServicename, accountNumber,
+					extensionparameters);
 		} catch (java.lang.Exception ex) {
 			ex.printStackTrace();
 			throw new RuntimeException(ex);

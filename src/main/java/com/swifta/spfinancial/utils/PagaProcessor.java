@@ -331,12 +331,85 @@ public class PagaProcessor extends MMOProcessor {
 
 	@Override
 	public Paybillsresponse paybillsrequest(String orginatingresourceid,
-			String merchantcode, String amount, String sendingdescription,
-			String receivingdescription, ParameterExtension extensionparameters) {
+			String billerPubicId, String amount, String billServicename,
+			String accountNumber, ParameterExtension extensionparameters) {
 		MoneyTransfer moneyTransfer = new PagaPropertyValues()
 				.getPropertyValues();
-		// TODO Auto-generated method stub
-		return null;
+		moneyTransfer.setRecieverPhone(orginatingresourceid);
+		moneyTransfer.setAmount(Long.valueOf(amount));
+		moneyTransfer.setAccountNumber(accountNumber);
+		moneyTransfer.setFirstName(extensionparameters.getExtensionparam().get(
+				0));
+		moneyTransfer.setLastName(extensionparameters.getExtensionparam()
+				.get(1));
+		moneyTransfer.setBillerPubicId(billerPubicId);
+		moneyTransfer.setBillServicename(billServicename);
+
+		// moneyTransfer.setMessage(sendingdescription);
+		moneyTransfer
+				.setTransactionId(extensionparameters.getSpTransactionid());
+		// moneyTransfer.setBillerPubicId(merchantcode);
+		/*
+		 * List<String> extensionParam =
+		 * extensionparameters.getExtensionparam(); if (extensionParam != null)
+		 * { logger.info(
+		 * "--------------------------------extension parameter is not null so pin is set"
+		 * ); moneyTransfer.setTransactionPin(extensionParam.get(0)); }
+		 */
+		pagaClient = new PagaClient();
+		PagaResponse pagaResponse = new PagaResponse();
+
+		try {
+			pagaResponse = pagaClient.payMerchant(moneyTransfer);
+			if (pagaResponse != null)
+				logger.info("PagaResponseCode:::: "
+						+ pagaResponse.getResponseCode());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.warning(e.getMessage());
+			e.printStackTrace();
+		}
+		Paybillsresponse paybillsresponse = new Paybillsresponse();
+
+		// if (pagaResponse.getr)
+
+		if (pagaResponse != null) {
+			if (pagaResponse.isCompleteStatus()) {
+				logger.info("--------------------------------serviceResponse is a success");
+				paybillsresponse.setStatuscode(StatusCode.COMPLETED);
+			} else {
+				logger.info("--------------------------------serviceResponse is not a success");
+				paybillsresponse.setStatuscode(StatusCode.FAILED);
+				paybillsresponse.setResponseMessage(pagaResponse
+						.getResponseDescription());
+			}
+
+			ParameterExtension parameterExtension = new ParameterExtension();
+			parameterExtension.setMmoperator(extensionparameters
+					.getMmoperator());
+			parameterExtension.setSpTransactionid(pagaResponse.getTrxid());
+			parameterExtension.getExtensionparam().add(
+					String.valueOf(pagaResponse.getResponseCode()));
+			parameterExtension.getExtensionparam().add(
+					pagaResponse.getResponseDescription());
+			if (paybillsresponse.getStatuscode().toString()
+					.equalsIgnoreCase("COMPLETED")) {
+				parameterExtension.getExtensionparam().add("true");
+			} else {
+				parameterExtension.getExtensionparam().add("false");
+			}
+			logger.info("--------------------------------serviceResponse is not null");
+
+			paybillsresponse.setExtensionparameters(parameterExtension);
+
+			paybillsresponse.setResponseMessage(pagaResponse
+					.getResponseDescription());
+
+		} else {
+			logger.info("--------------------------------serviceResponse is null");
+		}
+
+		return paybillsresponse;
 	}
 
 	@Override
@@ -346,8 +419,74 @@ public class PagaProcessor extends MMOProcessor {
 			ParameterExtension extensionparameters) {
 		MoneyTransfer moneyTransfer = new PagaPropertyValues()
 				.getPropertyValues();
-		// TODO Auto-generated method stub
-		return null;
+		moneyTransfer.setRecieverPhone(orginatingresourceid);
+		moneyTransfer.setAmount(Long.valueOf(amount));
+		// moneyTransfer.setMessage(sendingdescription);
+		moneyTransfer
+				.setTransactionId(extensionparameters.getSpTransactionid());
+		/*
+		 * List<String> extensionParam =
+		 * extensionparameters.getExtensionparam(); if (extensionParam != null)
+		 * { logger.info(
+		 * "--------------------------------extension parameter is not null so pin is set"
+		 * ); moneyTransfer.setTransactionPin(extensionParam.get(0)); }
+		 */
+		pagaClient = new PagaClient();
+		PagaResponse pagaResponse = new PagaResponse();
+
+		try {
+			pagaResponse = pagaClient.purchaseAirtime(moneyTransfer);
+			if (pagaResponse != null)
+				logger.info("PagaResponseCode:::: "
+						+ pagaResponse.getResponseCode());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.warning(e.getMessage());
+			e.printStackTrace();
+		}
+		Airtimesalesresponse airtimesalesresponse = new Airtimesalesresponse();
+
+		// if (pagaResponse.getr)
+
+		if (pagaResponse != null) {
+			if (pagaResponse.isCompleteStatus()) {
+				logger.info("--------------------------------serviceResponse is a success");
+				airtimesalesresponse.setStatuscode(StatusCode.COMPLETED);
+			} else {
+				logger.info("--------------------------------serviceResponse is not a success");
+				airtimesalesresponse.setStatuscode(StatusCode.FAILED);
+				airtimesalesresponse.setResponseMessage(pagaResponse
+						.getResponseDescription());
+			}
+
+			ParameterExtension parameterExtension = new ParameterExtension();
+			parameterExtension.setMmoperator(extensionparameters
+					.getMmoperator());
+			parameterExtension.setSpTransactionid(pagaResponse.getTrxid());
+			parameterExtension.getExtensionparam().add(
+					String.valueOf(pagaResponse.getResponseCode()));
+			parameterExtension.getExtensionparam().add(
+					pagaResponse.getResponseDescription());
+			parameterExtension.getExtensionparam().add(
+					pagaResponse.getFinancialtransactionid());
+			if (airtimesalesresponse.getStatuscode().toString()
+					.equalsIgnoreCase("COMPLETED")) {
+				parameterExtension.getExtensionparam().add("true");
+			} else {
+				parameterExtension.getExtensionparam().add("false");
+			}
+			logger.info("--------------------------------serviceResponse is not null");
+
+			airtimesalesresponse.setExtensionparameters(parameterExtension);
+
+			airtimesalesresponse.setResponseMessage(pagaResponse
+					.getResponseDescription());
+
+		} else {
+			logger.info("--------------------------------serviceResponse is null");
+		}
+
+		return airtimesalesresponse;
 	}
 
 	@Override

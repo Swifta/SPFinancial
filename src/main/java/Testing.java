@@ -5,9 +5,11 @@ import java.util.logging.Logger;
 import org.apache.commons.lang.RandomStringUtils;
 
 import com.swifta.spfinancial.utils.SMSEngine;
+import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Airtimesalesresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashinresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Cashoutresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.ParameterExtension;
+import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Paybillsresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.StatusCode;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1.Verifycashoutresponse;
 import com.swifta.subsidiary.mats.serviceprovider.operation.spfinancial.v1_0.SPfinancialPortImpl;
@@ -20,8 +22,9 @@ public class Testing {
 
 		// performCashinTeasy();
 		// performCashoutTeasy();
-
-		performCashIn();
+		purchaseAirtime();
+		// paybills();
+		// performCashIn();
 		// performCashOut();
 		// performVerifyCashOut();
 
@@ -31,6 +34,209 @@ public class Testing {
 		 * 201502121817495 Reference: 09FG201502121817353512123 Amount: 0.0
 		 * Date: null
 		 */
+	}
+
+	private static void paybills() {
+		SPfinancialPortImpl impl = new SPfinancialPortImpl();
+
+		// paga
+		// String userPin = "0000000000000000";
+		String orginatingresourceid = "2348051739048";
+		String billerPubicId = "A3878DC1-F07D-48E7-AA59-8276C3C26647";
+		String billServicename = "ACCESS";
+		String accountNumber = "4115702261";
+		String FirstName = "Modupe";
+		String LastName = "Ladejebi";
+
+		// fortis
+		// String orginatingresourceid = "2349082068605";
+		// String billerPubicId = "20702";
+		// String accountNumber = "12345678";
+		// String billServicename = "ACCESS";
+
+		// String companyid = "01";
+		String amount = "1500";
+		// String sendingdescription = "Payments";
+		// String receivingdescription = "details";
+		ParameterExtension extensionparameters = new ParameterExtension();
+		System.out
+				.println("--------------------------------After instantiating extension parameters");
+		extensionparameters.setMmoperator("pagatech");
+		extensionparameters.setSpTransactionid(generateReferencenNumber(12));
+		extensionparameters.getExtensionparam().add(FirstName);
+		extensionparameters.getExtensionparam().add(LastName);
+		System.out
+				.println("--------------------------------After setting extension parameters");
+
+		Paybillsresponse paybillsresponse = impl.paybillsrequest(
+				orginatingresourceid, billerPubicId, amount, billServicename,
+				accountNumber, extensionparameters);
+		System.out
+				.println("--------------------------------After sending transaction to backend");
+		String feedBack = "", subBalance = "", agentBalance = "", fee = "", responseMessage = "", mmOperator = "", transactionId = "";
+		if (paybillsresponse != null) {
+			System.out
+					.println("--------------------------------Cashin response is not null");
+			ParameterExtension extensionParameters = paybillsresponse
+					.getExtensionparameters();
+			mmOperator = extensionParameters.getMmoperator();
+			System.out.println("--------------------------------MM Operator"
+					+ mmOperator);
+			List<String> extensionParameterList = extensionParameters
+					.getExtensionparam();
+			Iterator<String> paramsIterator = extensionParameterList.iterator();
+			while (paramsIterator.hasNext()) {
+				System.out
+						.println("--------------------------------Iterating...."
+								+ paramsIterator.next());
+			}
+			// extensionParameters.getSpTransactionid();
+			// subBalance =
+			// airtiemResoponse.getDestinationpartnerbalanceafter();
+			// airtiemResoponse.getExtensionparameters();
+			// fee = airtiemResoponse.getFee();
+			// transactionId = airtiemResoponse.getFinancialtransactionid();
+			// agentBalance =
+			// airtiemResoponse.getOrginatingpartnerbalanceafter();
+			responseMessage = paybillsresponse.getResponseMessage();
+
+			StatusCode statusCode = paybillsresponse.getStatuscode();
+			if (statusCode != null) {
+				System.out
+						.println("--------------------------------Status code not null");
+				feedBack = statusCode.toString();
+				System.out.println(feedBack = statusCode.toString());
+			} else {
+				System.out
+						.println("--------------------------------Status code is null");
+			}
+		} else {
+			System.out
+					.println("--------------------------------Cashin Response is null");
+		}
+		if (feedBack.equalsIgnoreCase("COMPLETED")) {
+			System.out.println("--------------------------------"
+					+ extensionparameters.getMmoperator().toUpperCase()
+					+ " WAS SUCCESSFUL!!!! AZONTO!!!"
+					+ extensionparameters.getSpTransactionid());
+		} else {
+			System.out.println("--------------------------------"
+					+ extensionparameters.getMmoperator().toUpperCase()
+					+ " has faults!!!!!!!!!!!!" + feedBack);
+		}
+		System.out.println("--------------------------------"
+				+ extensionparameters.getMmoperator().toUpperCase()
+				+ " Response message>>>>" + responseMessage + " ========"
+				+ extensionparameters.getMmoperator().toUpperCase()
+				+ " feedback>>>>>>>>" + feedBack);
+		SMSEngine smsEngine = new SMSEngine();
+		transactionId = transactionId == null ? "N/A" : transactionId;
+		subBalance = subBalance == null ? "N/A" : subBalance;
+		agentBalance = agentBalance == null ? "N/A" : agentBalance;
+		String message = "Cashin " + transactionId + " was successful. N"
+				+ subBalance + " was sent and your Balance is now :N"
+				+ agentBalance;
+		System.out.println("--------------------------------SMS message::::::"
+				+ message);
+
+	}
+
+	private static void purchaseAirtime() {
+		SPfinancialPortImpl impl = new SPfinancialPortImpl();
+
+		// paga
+		// String userPin = "0000000000000000";
+		String orginatingresourceid = "08030000000";
+		// String destinationresourceid = "";
+		// String subscriberphonenumber = "";
+		// String transactionreference = "323507V";
+		// String redeemcode = "38436881";
+
+		// fortis
+		// String orginatingresourceid = "2348032249455";
+		String companyid = "01";
+		String amount = "100";
+		// String sendingdescription = "Payments";
+		// String receivingdescription = "details";
+		ParameterExtension extensionparameters = new ParameterExtension();
+		System.out
+				.println("--------------------------------After instantiating extension parameters");
+		extensionparameters.setMmoperator("pagatech");
+		extensionparameters.setSpTransactionid(generateReferencenNumber(12));
+		// extensionparameters.getExtensionparam().add(userPin);
+		System.out
+				.println("--------------------------------After setting extension parameters");
+		Airtimesalesresponse airtiemResoponse = impl.airtimesalesrequest(
+				orginatingresourceid, "", companyid, amount,
+				extensionparameters);
+		System.out
+				.println("--------------------------------After sending transaction to backend");
+		String feedBack = "", subBalance = "", agentBalance = "", fee = "", responseMessage = "", mmOperator = "", transactionId = "";
+		if (airtiemResoponse != null) {
+			System.out
+					.println("--------------------------------Cashin response is not null");
+			ParameterExtension extensionParameters = airtiemResoponse
+					.getExtensionparameters();
+			mmOperator = extensionParameters.getMmoperator();
+			System.out.println("--------------------------------MM Operator"
+					+ mmOperator);
+			List<String> extensionParameterList = extensionParameters
+					.getExtensionparam();
+			Iterator<String> paramsIterator = extensionParameterList.iterator();
+			while (paramsIterator.hasNext()) {
+				System.out
+						.println("--------------------------------Iterating...."
+								+ paramsIterator.next());
+			}
+			// extensionParameters.getSpTransactionid();
+			// subBalance =
+			// airtiemResoponse.getDestinationpartnerbalanceafter();
+			// airtiemResoponse.getExtensionparameters();
+			// fee = airtiemResoponse.getFee();
+			// transactionId = airtiemResoponse.getFinancialtransactionid();
+			// agentBalance =
+			// airtiemResoponse.getOrginatingpartnerbalanceafter();
+			responseMessage = airtiemResoponse.getResponseMessage();
+
+			StatusCode statusCode = airtiemResoponse.getStatuscode();
+			if (statusCode != null) {
+				System.out
+						.println("--------------------------------Status code not null");
+				feedBack = statusCode.toString();
+				System.out.println(feedBack = statusCode.toString());
+			} else {
+				System.out
+						.println("--------------------------------Status code is null");
+			}
+		} else {
+			System.out
+					.println("--------------------------------Cashin Response is null");
+		}
+		if (feedBack.equalsIgnoreCase("COMPLETED")) {
+			System.out.println("--------------------------------"
+					+ extensionparameters.getMmoperator().toUpperCase()
+					+ " WAS SUCCESSFUL!!!! AZONTO!!!"
+					+ extensionparameters.getSpTransactionid());
+		} else {
+			System.out.println("--------------------------------"
+					+ extensionparameters.getMmoperator().toUpperCase()
+					+ " has faults!!!!!!!!!!!!" + feedBack);
+		}
+		System.out.println("--------------------------------"
+				+ extensionparameters.getMmoperator().toUpperCase()
+				+ " Response message>>>>" + responseMessage + " ========"
+				+ extensionparameters.getMmoperator().toUpperCase()
+				+ " feedback>>>>>>>>" + feedBack);
+		SMSEngine smsEngine = new SMSEngine();
+		transactionId = transactionId == null ? "N/A" : transactionId;
+		subBalance = subBalance == null ? "N/A" : subBalance;
+		agentBalance = agentBalance == null ? "N/A" : agentBalance;
+		String message = "Cashin " + transactionId + " was successful. N"
+				+ subBalance + " was sent and your Balance is now :N"
+				+ agentBalance;
+		System.out.println("--------------------------------SMS message::::::"
+				+ message);
+
 	}
 
 	private static void doCashOutUnregistered() {
@@ -58,22 +264,22 @@ public class Testing {
 		ParameterExtension extensionparameters = new ParameterExtension();
 		System.out
 				.println("--------------------------------After instantiating extension parameters");
-		extensionparameters.setMmoperator("fets");
+		extensionparameters.setMmoperator("fortis");
 		extensionparameters.setSpTransactionid(generateReferencenNumber(12));
 		// extensionparameters.getExtensionparam().add(userPin);
 		System.out
 				.println("--------------------------------After setting extension parameters");
-		Cashoutresponse cashinResponse = impl.cashoutunregisteredrequest(
+		Cashoutresponse cashoutresponse = impl.cashoutunregisteredrequest(
 				orginatingresourceid, subscriberphonenumber, amount,
 				transactionreference, redeemcode, receivingdescription,
 				extensionparameters);
 		System.out
 				.println("--------------------------------After sending transaction to backend");
 		String feedBack = "", subBalance = "", agentBalance = "", fee = "", responseMessage = "", mmOperator = "", transactionId = "";
-		if (cashinResponse != null) {
+		if (cashoutresponse != null) {
 			System.out
 					.println("--------------------------------Cashin response is not null");
-			ParameterExtension extensionParameters = cashinResponse
+			ParameterExtension extensionParameters = cashoutresponse
 					.getExtensionparameters();
 			mmOperator = extensionParameters.getMmoperator();
 			System.out.println("--------------------------------MM Operator"
@@ -87,14 +293,14 @@ public class Testing {
 								+ paramsIterator.next());
 			}
 			extensionParameters.getSpTransactionid();
-			subBalance = cashinResponse.getDestinationpartnerbalanceafter();
-			cashinResponse.getExtensionparameters();
+			// subBalance = cashinResponse.getDestinationpartnerbalanceafter();
+			cashoutresponse.getExtensionparameters();
 			// fee = cashinResponse.getFee();
-			transactionId = cashinResponse.getFinancialtransactionid();
-			agentBalance = cashinResponse.getOrginatingpartnerbalanceafter();
-			responseMessage = cashinResponse.getResponseMessage();
+			transactionId = cashoutresponse.getFinancialtransactionid();
+			agentBalance = cashoutresponse.getOrginatingpartnerbalanceafter();
+			responseMessage = cashoutresponse.getResponseMessage();
 
-			StatusCode statusCode = cashinResponse.getStatuscode();
+			StatusCode statusCode = cashoutresponse.getStatuscode();
 			if (statusCode != null) {
 				System.out
 						.println("--------------------------------Status code not null");
@@ -161,7 +367,7 @@ public class Testing {
 		ParameterExtension extensionparameters = new ParameterExtension();
 		System.out
 				.println("--------------------------------After instantiating extension parameters");
-		extensionparameters.setMmoperator("pagatech");
+		extensionparameters.setMmoperator("fortis");
 		extensionparameters.setSpTransactionid(generateReferencenNumber(12));
 		// extensionparameters.getExtensionparam().add(userPin);
 		// extensionparameters.getExtensionparam().add(transferId);
@@ -285,7 +491,7 @@ public class Testing {
 		// String userPin = "500";
 		// // customer is the reciever
 		// // agent is the payer number
-		String orginatingresourceid = "08177777722";
+		String orginatingresourceid = "09082068605";
 		// String destinationresourceid = "";
 		// String reference_No
 
